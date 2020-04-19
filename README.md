@@ -45,7 +45,7 @@ see [examples](./examples/)
 
 ## Use Arduino IDE
 
-* install [Arduino STM32 device](https://github.com/rogerclarkmelbourne/Arduino_STM32/wiki)
+* install [Arduino STM32 device](https://github.com/rogerclarkmelbourne/Arduino_STM32/wiki)  
 or
 * board manager (I use this)
     * tool > board > board manager > Arduino SAM Boards (32-bits ARM Cortex-M3)
