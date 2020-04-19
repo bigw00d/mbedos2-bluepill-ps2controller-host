@@ -26,13 +26,16 @@ C:\WorkSpace\mbedos2-cli-blulpill-samples> mbed compile -m BLUEPILL_F103C8 -t GC
 C:\WorkSpace\mbedos2-cli-blulpill-samples> ST-LINK_CLI.exe -c SWD -P .\BUILD\BLUEPILL_F103C8\GCC_ARM\mbedos2-cli-blulpill-samples.bin 0x8000000 -Rst -Run -NoPrompt 
 ```
 * if clean building, `mbed compile -c -m BLUEPILL_F103C8 -t GCC_ARM`
-* `mbed deploy` for extract library
+* `mbed deploy` for extract library files
 * I use mbed-dev submodule (need to get recursively or update in Source Tree)  
   
-settings: get recursively
+settings: get recursively  
+
 <img width="50%" src="./img/clone_with_submodule.png" />  
-　
-menu: update submodule
+　  
+  
+menu: update submodule  
+
 <img width="25%" src="./img/sourcetree_submodule.png" />  
 
 
