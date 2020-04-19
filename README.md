@@ -1,4 +1,4 @@
-# mbedos2-cli-blulpill-samples
+# mbedos2-cli-bluepill-samples
 
 <img width="80%" src="./img/bluepill_with_stlinkv2.png" />  
 
@@ -76,3 +76,4 @@ or
 * [Install OpenOCD](https://os.mbed.com/teams/Renesas/wiki/Exporting-to-e2studio-with-CMSIS_DAP-DBG#install-openocd)
 * [Blue Pill + mbed](https://qiita.com/nanbuwks/items/26241a90004665570fe6)
 * [STM32F103C8T6 でLチカ](https://qiita.com/sugasaki/items/98bbff89bbd7f235525f)
+* [Mbed OS 2のサポートがいつ終わっても良いようにローカル環境を構築する方法【改訂版】](https://qiita.com/toyowata/items/86a312158187cafe3f7d)
