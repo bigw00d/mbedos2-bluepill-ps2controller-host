@@ -9,7 +9,7 @@
 - Windows 10 Pro
 - Mbed CLE(mbed os 2)
 
-## Quick start with BluePill
+## Quick start
 
 1. Installation
 * install [STM32 ST-LINK Utility](https://www.st.com/content/st_com/ja/products/development-tools/software-development-tools/stm32-software-development-tools/stm32-programmers/stsw-link004.html?dl=Esr3641WBLOeWDySnK7N%2FA%3D%3D%2Ct2UU9IOHq6oAQxLOeevmNznGb5UNia9EEIGo7rnBkXvgp2qXK%2FEhonXMx8Lv1ONG%2BBGz6oLVvvRLC0fX4sqXLqxqRc%2FaGWkkp%2BzgVl3V8VaVax5Ek3%2B%2FnKEA2DoYmEBgGjVibstcCnqSQu3K%2FdrpwoyD%2Fjq5kyQo9fUPLD0r%2BkkH0XRI92wrVFJ9dHYPwGB7u6pTDyvFHgJWkSrDEPGqkkzKByl9zUs%2FO6htinjzwmSaoxvVa4ApHl6LOu%2BqjipivC6FasmqiGbXpOdj6xW6U7O5Jh8AJotVeWWvtEaXTJh%2FrOTkMRvp8yAwSk9P2ub0t%2Fju7tadlwUCLflzrdsBLw%3D%3D&uid=BcpcApvrxWmbd6DozNPYo6GSOuPdfRWxFiMMWdA72HaQtyscK/gjzQ==)(including usb device driver)
@@ -61,7 +61,7 @@ or
 * [USBDevice_STM32F103](https://os.mbed.com/users/hudakz/code/USBDevice_STM32F103/)
 * [USBComposite_stm32f1(for Arduino)](https://github.com/arpruss/USBComposite_stm32f1)
 * [BluePillのmbed VSCode開発環境を構築してみた](https://qiita.com/kohei0302/items/6aa927907fe868ef0b50)
-    * windows is not good for it(ex. make command)
+    * windows is not good for it(for vscode settings ex. make command)
 * [Install OpenOCD](https://os.mbed.com/teams/Renesas/wiki/Exporting-to-e2studio-with-CMSIS_DAP-DBG#install-openocd)
 * [Blue Pill + mbed](https://qiita.com/nanbuwks/items/26241a90004665570fe6)
 * [STM32F103C8T6 でLチカ](https://qiita.com/sugasaki/items/98bbff89bbd7f235525f)
