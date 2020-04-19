@@ -1,5 +1,7 @@
 # mbedos2-cli-blulpill-samples
 
+<img width="80%" src="./img/bluepill_with_stlinkv2.png" />  
+
 ## Quick start with BluePill
 
 1. set up
@@ -7,17 +9,20 @@
 * update ST-Link V2 firmware with ST-LINK Utility
     * ST-LINK -> Firmware update -> Device Connect
 
-* install[mbed-cli-windows-installer](https://github.com/ARMmbed/mbed-cli-windows-installer/releases)
+* install [mbed-cli-windows-installer](https://github.com/ARMmbed/mbed-cli-windows-installer/releases)
 
 1. build & upload project
 ```txt
-C:\WorkSpace\mbed-repo\mbedos2-cli-example-basic>mbed compile -m BLUEPILL_F103C8 -t GCC_ARM
-C:\WorkSpace\mbed-repo\mbedos2-cli-example-basic>ST-LINK_CLI.exe -c SWD -P .\BUILD\BLUEPILL_F103C8\GCC_ARM\mbedos2-cli-example-basic.bin 0x8000000 -Rst -Run -NoPrompt 
+C:\WorkSpace\mbedos2-cli-blulpill-samples> mbed config root .
+C:\WorkSpace\mbedos2-cli-blulpill-samples> mbed compile -m BLUEPILL_F103C8 -t GCC_ARM
+C:\WorkSpace\mbedos2-cli-blulpill-samples> ST-LINK_CLI.exe -c SWD -P .\BUILD\BLUEPILL_F103C8\GCC_ARM\mbedos2-cli-blulpill-samples.bin 0x8000000 -Rst -Run -NoPrompt 
 ```
+* if clean building, `mbed compile -c -m BLUEPILL_F103C8 -t GCC_ARM`
+* I use mbed-dev submodule (need to get recursively or update in Source Tree)
+<img width="50%" src="./img/sourcetree_submodule.png" />  
+　
+<img width="50%" src="./img/clone_with_submodule.png" />  
 
-## Debug
-
-* see [BluePillのmbed VSCode開発環境を構築してみた](https://qiita.com/kohei0302/items/6aa927907fe868ef0b50)
 
 ## Arduino
 
@@ -34,7 +39,12 @@ C:\WorkSpace\mbed-repo\mbedos2-cli-example-basic>ST-LINK_CLI.exe -c SWD -P .\BUI
         * Serial port: (non selection)
         * Programmer: USBasp
 
+## Other Info
+* see [wiki](https://github.com/bigw00d/software-development-tips/tree/master/02_stm32)
+
 ## Related Links
+* [BluePillのmbed VSCode開発環境を構築してみた](https://qiita.com/kohei0302/items/6aa927907fe868ef0b50)
+    * windows is not good for it(ex. make command)
 * [Install OpenOCD](https://os.mbed.com/teams/Renesas/wiki/Exporting-to-e2studio-with-CMSIS_DAP-DBG#install-openocd)
 * [Blue Pill + mbed](https://qiita.com/nanbuwks/items/26241a90004665570fe6)
 * [STM32F103C8T6 でLチカ](https://qiita.com/sugasaki/items/98bbff89bbd7f235525f)

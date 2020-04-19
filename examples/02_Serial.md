@@ -1,6 +1,16 @@
+## Overview
+* Serial out with LED Blink
+
+##  Pin connections
+|BluePill  |USB Serial Board  |
+|---|---|
+|GND  |GND  |
+|A2  |RX  |
+
+## Code
+```main.c
 #include "mbed.h"
 
-// DigitalOut led(LED1);
 DigitalOut led(PC_13);
 Serial      pc(PA_2, PA_3); // TX, RX
 
@@ -10,8 +20,8 @@ int main()
     printf("hello, Mbed.\n");
     while (1) {
         led = !led;
-        // wait(0.5);
         wait(1.0);
         pc.printf("Blink.\n");
     }
 }
+```
