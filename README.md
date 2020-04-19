@@ -1,4 +1,4 @@
-# mbedos2-cli-blulpill-blink
+# mbedos2-cli-blulpill-samples
 
 ## Quick start with BluePill
 
