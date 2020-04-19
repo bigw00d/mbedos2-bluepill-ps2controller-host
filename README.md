@@ -22,16 +22,16 @@
 
 * install python modules
 ```txt
-C:\WorkSpace\mbedos2-cli-blulpill-samples> pip install -r .\tools\requirements.txt
-C:\WorkSpace\mbedos2-cli-blulpill-samples> pip install mbed-cli==1.10.1 pyelftools jsonschema
+C:\WorkSpace\mbedos2-cli-bluepill-samples> pip install -r .\tools\requirements.txt
+C:\WorkSpace\mbedos2-cli-bluepill-samples> pip install mbed-cli==1.10.1 pyelftools jsonschema
 ```
 
 2. Build & upload project
 ```txt
-C:\WorkSpace\mbedos2-cli-blulpill-samples> mbed config root .
-C:\WorkSpace\mbedos2-cli-blulpill-samples> mbed deploy
-C:\WorkSpace\mbedos2-cli-blulpill-samples> mbed compile -m BLUEPILL_F103C8 -t GCC_ARM
-C:\WorkSpace\mbedos2-cli-blulpill-samples> ST-LINK_CLI.exe -c SWD -P .\BUILD\BLUEPILL_F103C8\GCC_ARM\mbedos2-cli-blulpill-samples.bin 0x8000000 -Rst -Run -NoPrompt 
+C:\WorkSpace\mbedos2-cli-bluepill-samples> mbed config root .
+C:\WorkSpace\mbedos2-cli-bluepill-samples> mbed deploy
+C:\WorkSpace\mbedos2-cli-bluepill-samples> mbed compile -m BLUEPILL_F103C8 -t GCC_ARM
+C:\WorkSpace\mbedos2-cli-bluepill-samples> ST-LINK_CLI.exe -c SWD -P .\BUILD\BLUEPILL_F103C8\GCC_ARM\mbedos2-cli-bluepill-samples.bin 0x8000000 -Rst -Run -NoPrompt 
 ```
 * if clean building, `mbed compile -c -m BLUEPILL_F103C8 -t GCC_ARM`
 * `mbed deploy` for extract library files
