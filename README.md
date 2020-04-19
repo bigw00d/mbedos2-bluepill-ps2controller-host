@@ -2,16 +2,23 @@
 
 <img width="80%" src="./img/bluepill_with_stlinkv2.png" />  
 
+## Requirement
+
+- [STM32F103C8T6 minimum Development Board(BluePill)](https://www.aitendo.com/product/13348)
+- [ST Link V2 Programmer For STM8 STM32](https://www.aitendo.com/product/16082)
+- Windows 10 Pro
+- Mbed CLE(mbed os 2)
+
 ## Quick start with BluePill
 
-1. set up
-* install [STM32 ST-LINK Utility(including usb device driver)](https://www.st.com/content/st_com/ja/products/development-tools/software-development-tools/stm32-software-development-tools/stm32-programmers/stsw-link004.html?dl=Esr3641WBLOeWDySnK7N%2FA%3D%3D%2Ct2UU9IOHq6oAQxLOeevmNznGb5UNia9EEIGo7rnBkXvgp2qXK%2FEhonXMx8Lv1ONG%2BBGz6oLVvvRLC0fX4sqXLqxqRc%2FaGWkkp%2BzgVl3V8VaVax5Ek3%2B%2FnKEA2DoYmEBgGjVibstcCnqSQu3K%2FdrpwoyD%2Fjq5kyQo9fUPLD0r%2BkkH0XRI92wrVFJ9dHYPwGB7u6pTDyvFHgJWkSrDEPGqkkzKByl9zUs%2FO6htinjzwmSaoxvVa4ApHl6LOu%2BqjipivC6FasmqiGbXpOdj6xW6U7O5Jh8AJotVeWWvtEaXTJh%2FrOTkMRvp8yAwSk9P2ub0t%2Fju7tadlwUCLflzrdsBLw%3D%3D&uid=BcpcApvrxWmbd6DozNPYo6GSOuPdfRWxFiMMWdA72HaQtyscK/gjzQ==)
+1. Installation
+* install [STM32 ST-LINK Utility](https://www.st.com/content/st_com/ja/products/development-tools/software-development-tools/stm32-software-development-tools/stm32-programmers/stsw-link004.html?dl=Esr3641WBLOeWDySnK7N%2FA%3D%3D%2Ct2UU9IOHq6oAQxLOeevmNznGb5UNia9EEIGo7rnBkXvgp2qXK%2FEhonXMx8Lv1ONG%2BBGz6oLVvvRLC0fX4sqXLqxqRc%2FaGWkkp%2BzgVl3V8VaVax5Ek3%2B%2FnKEA2DoYmEBgGjVibstcCnqSQu3K%2FdrpwoyD%2Fjq5kyQo9fUPLD0r%2BkkH0XRI92wrVFJ9dHYPwGB7u6pTDyvFHgJWkSrDEPGqkkzKByl9zUs%2FO6htinjzwmSaoxvVa4ApHl6LOu%2BqjipivC6FasmqiGbXpOdj6xW6U7O5Jh8AJotVeWWvtEaXTJh%2FrOTkMRvp8yAwSk9P2ub0t%2Fju7tadlwUCLflzrdsBLw%3D%3D&uid=BcpcApvrxWmbd6DozNPYo6GSOuPdfRWxFiMMWdA72HaQtyscK/gjzQ==)(including usb device driver)
 * update ST-Link V2 firmware with ST-LINK Utility
     * ST-LINK -> Firmware update -> Device Connect
 
 * install [mbed-cli-windows-installer](https://github.com/ARMmbed/mbed-cli-windows-installer/releases)
 
-1. build & upload project
+2. Build & upload project
 ```txt
 C:\WorkSpace\mbedos2-cli-blulpill-samples> mbed config root .
 C:\WorkSpace\mbedos2-cli-blulpill-samples> mbed deploy
@@ -20,9 +27,12 @@ C:\WorkSpace\mbedos2-cli-blulpill-samples> ST-LINK_CLI.exe -c SWD -P .\BUILD\BLU
 ```
 * if clean building, `mbed compile -c -m BLUEPILL_F103C8 -t GCC_ARM`
 * `mbed deploy` for extract library
-* I use mbed-dev submodule (need to get recursively or update in Source Tree)
+* I use mbed-dev submodule (need to get recursively or update in Source Tree)  
+  
+settings: get recursively
 <img width="50%" src="./img/clone_with_submodule.png" />  
 　
+menu: update submodule
 <img width="25%" src="./img/sourcetree_submodule.png" />  
 
 
