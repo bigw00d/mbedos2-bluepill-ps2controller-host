@@ -1,3 +1,16 @@
+## Overview
+* USB Mouse & Keyboard sample code
+
+##  Pin connections
+|BluePill  |USB Connector |
+|---|---|
+|5V  |VCC  |
+|GND  |GND  |
+|A11  |D-  |
+|A12  |D+  |
+
+## Code
+```main.c
 #include "stm32f103c8t6.h"
 #include "mbed.h"
 #include "USBMouseKeyboard.h"
@@ -12,3 +25,4 @@ int main() {
         wait(1);
     }
 }
+```

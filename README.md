@@ -14,10 +14,12 @@
 1. build & upload project
 ```txt
 C:\WorkSpace\mbedos2-cli-blulpill-samples> mbed config root .
+C:\WorkSpace\mbedos2-cli-blulpill-samples> mbed deploy
 C:\WorkSpace\mbedos2-cli-blulpill-samples> mbed compile -m BLUEPILL_F103C8 -t GCC_ARM
 C:\WorkSpace\mbedos2-cli-blulpill-samples> ST-LINK_CLI.exe -c SWD -P .\BUILD\BLUEPILL_F103C8\GCC_ARM\mbedos2-cli-blulpill-samples.bin 0x8000000 -Rst -Run -NoPrompt 
 ```
 * if clean building, `mbed compile -c -m BLUEPILL_F103C8 -t GCC_ARM`
+* `mbed deploy` for extract library
 * I use mbed-dev submodule (need to get recursively or update in Source Tree)
 <img width="50%" src="./img/clone_with_submodule.png" />  
 　
@@ -43,6 +45,7 @@ or
 * see [wiki](https://github.com/bigw00d/software-development-tips/tree/master/02_stm32)
 
 ## Related Links
+* [USBDevice_STM32F103](https://os.mbed.com/users/hudakz/code/USBDevice_STM32F103/)
 * [USBComposite_stm32f1(for Arduino)](https://github.com/arpruss/USBComposite_stm32f1)
 * [BluePillのmbed VSCode開発環境を構築してみた](https://qiita.com/kohei0302/items/6aa927907fe868ef0b50)
     * windows is not good for it(ex. make command)
