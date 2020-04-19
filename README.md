@@ -19,16 +19,16 @@ C:\WorkSpace\mbedos2-cli-blulpill-samples> ST-LINK_CLI.exe -c SWD -P .\BUILD\BLU
 ```
 * if clean building, `mbed compile -c -m BLUEPILL_F103C8 -t GCC_ARM`
 * I use mbed-dev submodule (need to get recursively or update in Source Tree)
-<img width="50%" src="./img/sourcetree_submodule.png" />  
-　
 <img width="50%" src="./img/clone_with_submodule.png" />  
+　
+<img width="25%" src="./img/sourcetree_submodule.png" />  
 
 
-## Arduino
+## Use Arduino IDE
 
-1. build & upload project(Arduino 1.8.5)
 * install [Arduino STM32 device](https://github.com/rogerclarkmelbourne/Arduino_STM32/wiki)
-* or board manager (I use this)
+or
+* board manager (I use this)
     * tool > board > board manager > Arduino SAM Boards (32-bits ARM Cortex-M3)
     * board setting
         * Board: Generic STM32F103C series
@@ -43,6 +43,7 @@ C:\WorkSpace\mbedos2-cli-blulpill-samples> ST-LINK_CLI.exe -c SWD -P .\BUILD\BLU
 * see [wiki](https://github.com/bigw00d/software-development-tips/tree/master/02_stm32)
 
 ## Related Links
+* [USBComposite_stm32f1(for Arduino)](https://github.com/arpruss/USBComposite_stm32f1)
 * [BluePillのmbed VSCode開発環境を構築してみた](https://qiita.com/kohei0302/items/6aa927907fe868ef0b50)
     * windows is not good for it(ex. make command)
 * [Install OpenOCD](https://os.mbed.com/teams/Renesas/wiki/Exporting-to-e2studio-with-CMSIS_DAP-DBG#install-openocd)
