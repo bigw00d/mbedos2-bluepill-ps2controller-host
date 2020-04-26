@@ -37,6 +37,7 @@ public:
     int init ();
     int poll ();
     int read (TYPE t);
+    int read_move ();
     int vibration (int v1, int v2);
 
 private:

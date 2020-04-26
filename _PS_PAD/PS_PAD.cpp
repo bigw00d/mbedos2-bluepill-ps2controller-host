@@ -64,6 +64,22 @@ int PS_PAD::poll () {
     return 0;
 }
 
+int PS_PAD::read_move () {
+    int move = 0xF0;
+
+    if (!_connected) {
+        return 0;
+    }
+
+    move |= (_pad[0] & 0x80) >> 7; // PAD_LEFT
+    move |= (_pad[0] & 0x40) >> 5; // PAD_BOTTOM
+    move |= (_pad[0] & 0x20) >> 3; // PAD_RIGHT
+    move |= (_pad[0] & 0x10) >> 1; // PAD_TOP
+    move = ~move;
+
+    return move;
+}
+
 int PS_PAD::read (TYPE t) {
     if (!_connected) {
         if (t <= BUTTONS) {

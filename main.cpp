@@ -1,30 +1,38 @@
 #include "stm32f103c8t6.h"
 #include "mbed.h"
-// #include "USBJoystick.h"
+#include "USBJoystick.h"
 #include "PS_PAD.h"
 
 Serial      pc(PA_2, PA_3); // TX, RX
 
 PS_PAD      ps2(PA_7, PA_6, PA_5, PB_6);  //mosi=CMD,miso=DAT,clk=CLK,ss=SEL
 
-// USBJoystick joystick;
+USBJoystick joystick;
 
-// int16_t moveTable[9][2] = {
-//     {0         , JY_MIN_ABS  },	//	UP         
-//     {JX_MAX_ABS, JY_MIN_ABS  },	//	UPRIGHT   
-//     {JX_MAX_ABS, 0           },	//	RIGHT      
-//     {JX_MAX_ABS, JY_MAX_ABS  },	//	RIGHTDOWN 
-//     {0         , JY_MAX_ABS  },	//	DOWN       
-//     {JX_MIN_ABS, JY_MAX_ABS  },	//	DOWNLEFT  
-//     {JX_MIN_ABS, 0           },	//	LEFT       
-//     {JX_MIN_ABS, JY_MIN_ABS  },	//	LEFTUP    
-//     {0         , 0           }	//	NEUTRAL    
-// };
+int16_t moveTable[16][2] = {
+    {0         , 0           },	//	NEUTRAL(0b0000)    
+    {JX_MIN_ABS, 0           },	//	LEFT(0b0001)       
+    {0         , JY_MAX_ABS  },	//	DOWN(0b0010)       
+    {JX_MIN_ABS, JY_MAX_ABS  },	//	DOWNLEFT(0b0011)  
+    {JX_MAX_ABS, 0           },	//	RIGHT(0b0100)      
+    {0         , 0           },	//	---(0b0101)    
+    {JX_MAX_ABS, JY_MAX_ABS  },	//	RIGHTDOWN(0b0110) 
+    {0         , 0           },	//	---(0b0111)    
+    {0         , JY_MIN_ABS  },	//	UP(0b1000)         
+    {JX_MIN_ABS, JY_MIN_ABS  },	//	LEFTUP(0b1001)    
+    {0         , 0           },	//	---(0b1010)    
+    {0         , 0           },	//	---(0b1011)    
+    {JX_MAX_ABS, JY_MIN_ABS  },	//	UPRIGHT(0b1100)   
+    {0         , 0           },	//	---(0b1101)    
+    {0         , 0           },	//	---(0b1110)    
+    {0         , 0           },	//	---(0b1111)    
+};
 
 int main() {
-    // int16_t x = 0;
-    // int16_t y = 0;
-    // uint32_t buttons = 0;    
+    uint8_t ps2move = 0;    
+    int16_t x = 0;
+    int16_t y = 0;
+    uint32_t buttons = 0;    
     // uint8_t state = 0;
 
     confSysClock();         //Configure system clock (72MHz HSE clock, 48MHz USB clock)
@@ -36,30 +44,37 @@ int main() {
     while(1)
     {   
         ps2.poll();     
-        pc.printf("%i ",ps2.read(PS_PAD :: PAD_L2));
-        pc.printf("%i ",ps2.read(PS_PAD :: PAD_R2));
-        pc.printf("%i ",ps2.read(PS_PAD :: PAD_L1));
-        pc.printf("%i ",ps2.read(PS_PAD :: PAD_R1));
+        // pc.printf("%i ",ps2.read(PS_PAD :: PAD_L2));
+        // pc.printf("%i ",ps2.read(PS_PAD :: PAD_R2));
+        // pc.printf("%i ",ps2.read(PS_PAD :: PAD_L1));
+        // pc.printf("%i ",ps2.read(PS_PAD :: PAD_R1));
         
-        pc.printf("%i ",ps2.read(PS_PAD :: PAD_TRIANGLE));
-        pc.printf("%i ",ps2.read(PS_PAD :: PAD_CIRCLE));
-        pc.printf("%i ",ps2.read(PS_PAD :: PAD_X));
-        pc.printf("%i ",ps2.read(PS_PAD :: PAD_SQUARE));
+        // pc.printf("%i ",ps2.read(PS_PAD :: PAD_TRIANGLE));
+        // pc.printf("%i ",ps2.read(PS_PAD :: PAD_CIRCLE));
+        // pc.printf("%i ",ps2.read(PS_PAD :: PAD_X));
+        // pc.printf("%i ",ps2.read(PS_PAD :: PAD_SQUARE));
         
-        pc.printf("%i ",ps2.read(PS_PAD :: PAD_SELECT));
-        // pc.printf("%i ",ps2.read(PS_PAD :: PAD_L3));
-        // pc.printf("%i ",ps2.read(PS_PAD :: PAD_R3));
-        pc.printf("%i ",ps2.read(PS_PAD :: PAD_START));
+        // pc.printf("%i ",ps2.read(PS_PAD :: PAD_SELECT));
+        // pc.printf("%i ",ps2.read(PS_PAD :: PAD_START));
         
-        pc.printf("%i ",ps2.read(PS_PAD :: PAD_TOP));
-        pc.printf("%i ",ps2.read(PS_PAD :: PAD_RIGHT));
-        pc.printf("%i ",ps2.read(PS_PAD :: PAD_BOTTOM));
-        pc.printf("%i ",ps2.read(PS_PAD :: PAD_LEFT));
-        
-        pc.printf("%i ",ps2.read(PS_PAD :: ANALOG_LX));
-        pc.printf("%i ",ps2.read(PS_PAD :: ANALOG_LY));
-        pc.printf("%i ",ps2.read(PS_PAD :: ANALOG_RX));
-        pc.printf("%i \n",ps2.read(PS_PAD :: ANALOG_RY));    
+        // pc.printf("%i ",ps2.read(PS_PAD :: PAD_TOP));
+        // pc.printf("%i ",ps2.read(PS_PAD :: PAD_RIGHT));
+        // pc.printf("%i ",ps2.read(PS_PAD :: PAD_BOTTOM));
+        // pc.printf("%i ",ps2.read(PS_PAD :: PAD_LEFT));
+
+        ps2move = ps2.read_move();
+        ps2move &= 0x0F;
+        x = moveTable[ps2move][0];  // value -127 .. 128
+        y = moveTable[ps2move][1];  // value -127 .. 128
+        pc.printf("ps2move: %x ",ps2move);
+        pc.printf("x: %d ",x);
+        pc.printf("y: %d \n",y);
+        joystick.move(x, y);
+
+        // pc.printf("%i ",ps2.read(PS_PAD :: ANALOG_LX));
+        // pc.printf("%i ",ps2.read(PS_PAD :: ANALOG_LY));
+        // pc.printf("%i ",ps2.read(PS_PAD :: ANALOG_RX));
+        // pc.printf("%i \n",ps2.read(PS_PAD :: ANALOG_RY));    
 
         wait(0.05);
     }    
