@@ -1,8 +1,6 @@
 # mbedos2-bluepill-ps2controller-host
 Bluepill host application for PS2 controller
 
-<img width="80%" src="./img/bluepill_with_stlinkv2.png" />  
-
 ## Requirement
 
 - [STM32F103C8T6 minimum Development Board(BluePill)](https://www.aitendo.com/product/13348)
@@ -20,6 +18,10 @@ Bluepill host application for PS2 controller
 |BluePill  |PC |
 |---|---|
 |USB Micro-B  |USB-A |
+
+### Programmer
+<img width="80%" src="./img/bluepill_with_stlinkv2.png" />  
+
 
 ## Quick start
 
@@ -61,21 +63,6 @@ menu: update submodule
 ## Sample codes
 
 see [examples](./examples/)
-
-## Use Arduino IDE
-
-* install [Arduino STM32 device](https://github.com/rogerclarkmelbourne/Arduino_STM32/wiki)  
-or
-* board manager (I use this)
-    * tool > board > board manager > Arduino SAM Boards (32-bits ARM Cortex-M3)
-    * board setting
-        * Board: Generic STM32F103C series
-        * Optimize: Smallest
-        * Variant: STM32F103C8 (20k RAM, 64k Flash) or STM32F103CB (20k RAM, 128k Flash)
-        * CPU Speed(MHz): 72MHz (Normal)
-        * Upload method: STLink
-        * Serial port: (non selection)
-        * Programmer: USBasp
 
 ## Other Info
 * see [wiki](https://github.com/bigw00d/software-development-tips/tree/master/02_stm32)
