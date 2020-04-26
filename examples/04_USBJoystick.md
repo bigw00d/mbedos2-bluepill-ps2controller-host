@@ -1,9 +1,6 @@
 ## Overview
 USB Joystick sample code
 
-<img width="40%" src="./usbjoy1.png" />
-<img width="30%" src="./usbjoy2.png" />  
-
 ##  Connections
 |BluePill  |PC |
 |---|---|
@@ -74,5 +71,14 @@ int main() {
 }
 
 ```
+
+## Usage 
+
+1. Connect PC to Bluepill with USB cable
+
+1. Check Joystick property  
+<img width="40%" src="./usbjoy1.png" />
+<img width="30%" src="./usbjoy2.png" />  
+
 ## Related Links
 * [USBJoystick(mbed library)](https://os.mbed.com/users/wim/code/USBJoystick/)
