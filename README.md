@@ -21,11 +21,11 @@ Bluepill host application for PS2 controller
 
 |Controller  |BluePill  |Note  |
 |---|---|---|
-|Data | PA_6 |insert 1k pull-up to 5V|
-|CMD  | PA_7 ||
+|Data(miso) | PA_6 |insert 1k pull-up to 5V|
+|CMD(mosi)  | PA_7 ||
 |GND  | GND ||
 |3V3  | 3V3 ||
-|SEL  | PB_6 ||
+|SEL  | PB_6 |insert 1k pull-up to 5V|
 |CLK  | PA_5 ||
 
 ### Programmer
