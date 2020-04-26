@@ -1,3 +1,16 @@
+## Overview
+USB Joystick sample code
+
+<img width="40%" src="./usbjoy1.png" />
+<img width="30%" src="./usbjoy2.png" />  
+
+##  Connections
+|BluePill  |PC |
+|---|---|
+|USB Micro-B  |USB-A |
+
+## Code
+```main.c
 #include "stm32f103c8t6.h"
 #include "mbed.h"
 #include "USBJoystick.h"
@@ -59,3 +72,7 @@ int main() {
         wait(1);
     }
 }
+
+```
+## Related Links
+* [USBJoystick(mbed library)](https://os.mbed.com/users/wim/code/USBJoystick/)
