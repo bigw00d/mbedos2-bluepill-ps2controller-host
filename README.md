@@ -19,6 +19,15 @@ Bluepill host application for PS2 controller
 |---|---|
 |USB Micro-B  |USB-A |
 
+|Controller  |BluePill  |Note  |
+|---|---|---|
+|Data | PA_6 |insert 1k pull-up to 5V|
+|CMD  | PA_7 ||
+|GND  | GND ||
+|3V3  | 3V3 ||
+|SEL  | PB_6 ||
+|CLK  | PA_5 ||
+
 ### Programmer
 <img width="80%" src="./img/bluepill_with_stlinkv2.png" />  
 
@@ -69,10 +78,7 @@ see [examples](./examples/)
 
 ## Related Links
 * [USBDevice_STM32F103](https://os.mbed.com/users/hudakz/code/USBDevice_STM32F103/)
-* [USBComposite_stm32f1(for Arduino)](https://github.com/arpruss/USBComposite_stm32f1)
+* [PS_PAD](https://os.mbed.com/users/okini3939/code/PS_PAD/)
 * [BluePillのmbed VSCode開発環境を構築してみた](https://qiita.com/kohei0302/items/6aa927907fe868ef0b50)
     * windows is not good for it(for vscode settings ex. make command)
-* [Install OpenOCD](https://os.mbed.com/teams/Renesas/wiki/Exporting-to-e2studio-with-CMSIS_DAP-DBG#install-openocd)
-* [Blue Pill + mbed](https://qiita.com/nanbuwks/items/26241a90004665570fe6)
-* [STM32F103C8T6 でLチカ](https://qiita.com/sugasaki/items/98bbff89bbd7f235525f)
 * [Mbed OS 2のサポートがいつ終わっても良いようにローカル環境を構築する方法【改訂版】](https://qiita.com/toyowata/items/86a312158187cafe3f7d)
