@@ -1,4 +1,5 @@
-# mbedos2-cli-bluepill-samples
+# mbedos2-bluepill-ps2controller-host
+Bluepill host application for PS2 controller
 
 <img width="80%" src="./img/bluepill_with_stlinkv2.png" />  
 
@@ -8,6 +9,17 @@
 - [ST Link V2 Programmer For STM8 STM32](https://www.aitendo.com/product/16082)
 - Windows 10 Pro
 - Mbed CLE(mbed os 2)
+
+
+##  Pin connections
+|BluePill  |USB Serial Board  |
+|---|---|
+|GND  |GND  |
+|A2  |RX  |
+
+|BluePill  |PC |
+|---|---|
+|USB Micro-B  |USB-A |
 
 ## Quick start
 
@@ -22,16 +34,16 @@
 
 * install python modules
 ```txt
-C:\WorkSpace\mbedos2-cli-bluepill-samples> pip install -r .\tools\requirements.txt
-C:\WorkSpace\mbedos2-cli-bluepill-samples> pip install mbed-cli==1.10.1 pyelftools jsonschema
+C:\WorkSpace\mbedos2-bluepill-ps2controller-host> pip install -r .\tools\requirements.txt
+C:\WorkSpace\mbedos2-bluepill-ps2controller-host> pip install mbed-cli==1.10.1 pyelftools jsonschema
 ```
 
 2. Build & upload project
 ```txt
-C:\WorkSpace\mbedos2-cli-bluepill-samples> mbed config root .
-C:\WorkSpace\mbedos2-cli-bluepill-samples> mbed deploy
-C:\WorkSpace\mbedos2-cli-bluepill-samples> mbed compile -m BLUEPILL_F103C8 -t GCC_ARM
-C:\WorkSpace\mbedos2-cli-bluepill-samples> ST-LINK_CLI.exe -c SWD -P .\BUILD\BLUEPILL_F103C8\GCC_ARM\mbedos2-cli-bluepill-samples.bin 0x8000000 -Rst -Run -NoPrompt 
+C:\WorkSpace\mbedos2-bluepill-ps2controller-host> mbed config root .
+C:\WorkSpace\mbedos2-bluepill-ps2controller-host> mbed deploy
+C:\WorkSpace\mbedos2-bluepill-ps2controller-host> mbed compile -m BLUEPILL_F103C8 -t GCC_ARM
+C:\WorkSpace\mbedos2-bluepill-ps2controller-host> ST-LINK_CLI.exe -c SWD -P .\BUILD\BLUEPILL_F103C8\GCC_ARM\mbedos2-bluepill-ps2controller-host.bin 0x8000000 -Rst -Run -NoPrompt 
 ```
 * if clean building, `mbed compile -c -m BLUEPILL_F103C8 -t GCC_ARM`
 * `mbed deploy` for extract library files

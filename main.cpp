@@ -2,6 +2,8 @@
 #include "mbed.h"
 #include "USBJoystick.h"
 
+Serial      pc(PA_2, PA_3); // TX, RX
+
 USBJoystick joystick;
 
 int16_t moveTable[9][2] = {
@@ -23,6 +25,9 @@ int main() {
     uint8_t state = 0;
 
     confSysClock();         //Configure system clock (72MHz HSE clock, 48MHz USB clock)
+
+    pc.baud(115200);
+    printf("hello, Mbed.\n");
     
     while (1) {
         switch (state) {
@@ -54,6 +59,7 @@ int main() {
                 ;
                 break;
         }
+        printf("state: %d\n", state);
         state = (state + 1) % 17;
         joystick.update();
         wait(1);
