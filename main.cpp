@@ -28,12 +28,14 @@ int16_t moveTable[16][2] = {
     {0         , 0           },	//	---(0b1111)    
 };
 
+uint32_t ps2tojoypad(int ps2btn);
+
 int main() {
     uint8_t ps2move = 0;    
     int16_t x = 0;
     int16_t y = 0;
     uint32_t buttons = 0;    
-    // uint8_t state = 0;
+    int ps2btn = 0;
 
     confSysClock();         //Configure system clock (72MHz HSE clock, 48MHz USB clock)
 
@@ -44,6 +46,14 @@ int main() {
     while(1)
     {   
         ps2.poll();     
+
+        // check button
+        ps2btn = ps2.read(PS_PAD :: BUTTONS);
+        buttons = ps2tojoypad(ps2btn);
+        if (ps2btn != 0x0000) {
+            pc.printf("ps2btn: %04x ",ps2btn);
+            pc.printf("buttons: %04x ",buttons);
+        }
         // pc.printf("%i ",ps2.read(PS_PAD :: PAD_L2));
         // pc.printf("%i ",ps2.read(PS_PAD :: PAD_R2));
         // pc.printf("%i ",ps2.read(PS_PAD :: PAD_L1));
@@ -56,28 +66,21 @@ int main() {
         
         // pc.printf("%i ",ps2.read(PS_PAD :: PAD_SELECT));
         // pc.printf("%i ",ps2.read(PS_PAD :: PAD_START));
+        joystick.buttons(buttons);
         
-        // pc.printf("%i ",ps2.read(PS_PAD :: PAD_TOP));
-        // pc.printf("%i ",ps2.read(PS_PAD :: PAD_RIGHT));
-        // pc.printf("%i ",ps2.read(PS_PAD :: PAD_BOTTOM));
-        // pc.printf("%i ",ps2.read(PS_PAD :: PAD_LEFT));
-
+        // check move
         ps2move = ps2.read_move();
         ps2move &= 0x0F;
         x = moveTable[ps2move][0];  // value -127 .. 128
         y = moveTable[ps2move][1];  // value -127 .. 128
-        pc.printf("ps2move: %x ",ps2move);
-        pc.printf("x: %d ",x);
-        pc.printf("y: %d \n",y);
+        // pc.printf("ps2move: %x ",ps2move);
+        // pc.printf("x: %d ",x);
+        // pc.printf("y: %d \n",y);
         joystick.move(x, y);
 
-        // pc.printf("%i ",ps2.read(PS_PAD :: ANALOG_LX));
-        // pc.printf("%i ",ps2.read(PS_PAD :: ANALOG_LY));
-        // pc.printf("%i ",ps2.read(PS_PAD :: ANALOG_RX));
-        // pc.printf("%i \n",ps2.read(PS_PAD :: ANALOG_RY));    
-
+        joystick.update();
         wait(0.05);
-    }    
+    }
     // while (1) {
     //     switch (state) {
     //         case 0: //case 0 .. 8: joystick move(UP, UPRIGHT, .. , NEUTRAL)
@@ -113,4 +116,47 @@ int main() {
     //     joystick.update();
     //     wait(1);
     // }
+}
+
+
+uint32_t ps2tojoypad(int ps2btn) {
+    uint32_t joypadbtn = 0;
+    switch (ps2btn) {
+        // PAD_START:0x0008 -> ps2btn: 0x0080
+        case 0x0008:
+            joypadbtn = 0x0080;
+            break;
+        // PAD_SELECT:0x0001 -> ps2btn: 0x0040
+        case 0x0001:
+            joypadbtn = 0x0040;
+            break;
+        // PAD_SQUARE:0x8000 -> ps2btn: 0x0008
+        case 0x8000:
+            joypadbtn = 0x0008;
+            break;
+        // PAD_X:0x4000 -> ps2btn: 0x0002
+        case 0x4000:
+            joypadbtn = 0x0002;
+            break;
+        // PAD_CIRCLE:0x2000 -> ps2btn: 0x0001
+        case 0x2000:
+            joypadbtn = 0x0001;
+            break;
+        // PAD_TRIANGLE:0x1000 -> ps2btn: 0x0004
+        case 0x1000:
+            joypadbtn = 0x0004;
+            break;
+        // PAD_R1:0x0400 -> ps2btn: 0x0020
+        case 0x0400:
+            joypadbtn = 0x0020;
+            break;
+        // PAD_L1:0x0800 -> ps2btn: 0x0010
+        case 0x0800:
+            joypadbtn = 0x0010;
+            break;
+        default:
+            ;
+            break;
+    }
+    return joypadbtn;
 }
