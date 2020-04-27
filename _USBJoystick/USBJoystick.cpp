@@ -44,10 +44,6 @@ bool USBJoystick::update() {
    int count = 0;
 
    // Fill the report according to the Joystick Descriptor
-   // report.data[0] = _t & 0xff;            
-   // report.data[1] = _r & 0xff;               
-   // report.data[2] = _x & 0xff;            
-   // report.data[3] = _y & 0xff;
    report.data[count] = _t & 0xff;   
    count++;         
    report.data[count] = _r & 0xff;               
@@ -59,48 +55,29 @@ bool USBJoystick::update() {
 
 
 #if (BUTTONS4 == 1)               
-//Hat and 4 Buttons
-//   report.data[4] = ((_buttons & 0x0f) << 4) | (_hat & 0x0f) ;                                      
-//   report.length = 5; 
-
-
 //Use 4 bit padding for hat4 or hat8
-   // report.data[4] = (_hat & 0x0f) ;                                      
    report.data[count] = (_hat & 0x0f) ;                                      
    count++;
 
 //Use 4 bit padding for buttons   
-   // report.data[5] = (_buttons & 0x0f) ;                                         
    report.data[count] = (_buttons & 0x0f) ;                                         
    count++;
-   // report.length = 6; 
    report.length = count; 
 #endif
 
 #if (BUTTONS8 == 1)               
-//Hat and first 4 Buttons
-//   report.data[4] = ((_buttons & 0x0f) << 4) | (_hat & 0x0f) ;                                      
-//
-//Use bit padding for last 4 Buttons
-//   report.data[5] =  (_buttons & 0xf0) >> 4;                                         
-//   report.length = 6; 
-
 //Use 4 bit padding for hat4 or hat8
-   // report.data[4] = (_hat & 0x0f) ;                                      
    report.data[count] = (_hat & 0x0f) ;                                      
    count++;
 
 //Use 8 bits for buttons   
-   // report.data[5] = (_buttons & 0xff) ;
    report.data[count] = (_buttons & 0xff) ;                                         
    count++;
-   // report.length = 6; 
    report.length = count; 
 #endif
 
 #if (BUTTONS32 == 1)               
 //Use 4 bit padding for hat4 or hat8
-   // report.data[4] = (_hat & 0x0f) ;
    report.data[count] = (_hat & 0x0f) ;
    count++;
 
@@ -114,11 +91,6 @@ bool USBJoystick::update() {
    report.data[count] = (_buttons >> 24) & 0xff;
    count++;
    report.length = count;
-   // report.data[5] = (_buttons >>  0) & 0xff;
-   // report.data[6] = (_buttons >>  8) & 0xff;
-   // report.data[7] = (_buttons >> 16) & 0xff;
-   // report.data[8] = (_buttons >> 24) & 0xff;
-   // report.length = 9;
 #endif
        
    return send(&report);
@@ -141,6 +113,13 @@ bool USBJoystick::move(int16_t x, int16_t y) {
 }
 
 bool USBJoystick::buttons(uint32_t buttons) {
+   _buttons = buttons;
+   return update();
+}
+
+bool USBJoystick::move_buttons(int16_t x, int16_t y, uint32_t buttons) {
+   _x = x;
+   _y = y;
    _buttons = buttons;
    return update();
 }

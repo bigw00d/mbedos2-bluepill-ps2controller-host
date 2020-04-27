@@ -36,7 +36,6 @@ int main() {
     int16_t y = 0;
     uint32_t buttons = 0;    
     int ps2btn = 0;
-    int state = 0; //test 
 
     confSysClock();         //Configure system clock (72MHz HSE clock, 48MHz USB clock)
 
@@ -46,36 +45,18 @@ int main() {
 
     while(1)
     {   
-        // button check
-        // buttons = (0x01 << state);   // value    0 .. 7, one bit per button  
-        // joystick.buttons(buttons);
-        // pc.printf("%d buttons: %08x\n",state, buttons);
-        // state = (state + 1) % 32;
-        // wait(1);
-
         ps2.poll();     
 
         // check button
         ps2btn = ps2.read(PS_PAD :: BUTTONS);
         buttons = ps2tojoypad(ps2btn);
-        if (ps2btn != 0x0000) {
-            pc.printf("ps2btn: %04x ",ps2btn);
-            pc.printf("buttons: %04x \n",buttons);
-        }
-
-        joystick.buttons(buttons);
         
         // check move
         ps2move = ps2.read_move();
         ps2move &= 0x0F;
         x = moveTable[ps2move][0];  // value -127 .. 128
         y = moveTable[ps2move][1];  // value -127 .. 128
-        // pc.printf("ps2move: %x ",ps2move);
-        // pc.printf("x: %d ",x);
-        // pc.printf("y: %d \n",y);
-        joystick.move(x, y);
-
-        joystick.update();
+        joystick.move_buttons(x, y, buttons);
         wait(0.05);
     }
 
