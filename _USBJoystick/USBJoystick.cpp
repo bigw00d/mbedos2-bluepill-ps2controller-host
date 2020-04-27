@@ -92,7 +92,7 @@ bool USBJoystick::update() {
 
 //Use 8 bits for buttons   
    // report.data[5] = (_buttons & 0xff) ;
-   report.data[count] = (_buttons & 0x0f) ;                                         
+   report.data[count] = (_buttons & 0xff) ;                                         
    count++;
    // report.length = 6; 
    report.length = count; 

@@ -31,8 +31,6 @@
 #define REPORT_ID_JOYSTICK  4
 
 //Configure Joystick
-#define CUSTOM    1
-
 #define HAT4      0
 #define HAT8      1
 
