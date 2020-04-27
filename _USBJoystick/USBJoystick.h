@@ -151,7 +151,8 @@ class USBJoystick: public USBHID {
      */
 //     USBJoystick(uint16_t vendor_id = 0x1234, uint16_t product_id = 0x0100, uint16_t product_release = 0x0001, int waitForConnect = true):    // 4 buttons, no padding on buttons
 //     USBJoystick(uint16_t vendor_id = 0x1234, uint16_t product_id = 0x0500, uint16_t product_release = 0x0001, int waitForConnect = true):    // 8 buttons, no padding on buttons
-     USBJoystick(uint16_t vendor_id = 0x1234, uint16_t product_id = 0x0600, uint16_t product_release = 0x0001, int waitForConnect = true):    // 32 buttons, no padding on buttons
+//     USBJoystick(uint16_t vendor_id = 0x1234, uint16_t product_id = 0x0600, uint16_t product_release = 0x0001, int waitForConnect = true):    // 32 buttons, no padding on buttons
+     USBJoystick(uint16_t vendor_id = 0x1234, uint16_t product_id = 0x0500, uint16_t product_release = 0x0001, int waitForConnect = true):    // 8 buttons, no padding on buttons
        USBHID(0, 0, vendor_id, product_id, product_release, false) {
          _init();
          connect(waitForConnect);
@@ -209,6 +210,16 @@ class USBJoystick: public USBHID {
        * @returns true if there is no error, false otherwise
        */
      bool buttons(uint32_t buttons);
+
+     /**
+       * Move the cursor to (x, y), Press one or several buttons
+       *
+       * @param x-axis position
+       * @param y-axis position
+       * @param buttons buttons state
+       * @returns true if there is no error, false otherwise
+       */
+     bool move_buttons(int16_t x, int16_t y, uint32_t buttons);
          
      /**
        * Press hat

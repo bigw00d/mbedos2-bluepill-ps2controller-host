@@ -1,5 +1,6 @@
 # mbedos2-bluepill-ps2controller-host
 Bluepill host application for PS2 controller
+<img width="75%" src="./img/overview.png" />  
 
 ## Requirement
 
@@ -48,8 +49,12 @@ Bluepill host application for PS2 controller
 C:\WorkSpace\mbedos2-bluepill-ps2controller-host> pip install -r .\tools\requirements.txt
 C:\WorkSpace\mbedos2-bluepill-ps2controller-host> pip install mbed-cli==1.10.1 pyelftools jsonschema
 ```
+2. Change Vender ID & Product ID(USBJoystick.h)
+```txt
+     USBJoystick(uint16_t vendor_id = 0x????, uint16_t product_id = 0x????, uint16_t product_release = 0x0001, int waitForConnect = true):    // Buffalo USB JoyStick
+```
 
-2. Build & upload project
+3. Build & upload project
 ```txt
 C:\WorkSpace\mbedos2-bluepill-ps2controller-host> mbed config root .
 C:\WorkSpace\mbedos2-bluepill-ps2controller-host> mbed deploy
@@ -69,9 +74,17 @@ menu: update submodule
 
 <img width="25%" src="./img/sourcetree_submodule.png" />  
 
-## Sample codes
-
-see [examples](./examples/)
+##  Button Mapping
+|PS2 Controller  |USB Joypad  |
+|---|---|
+|PAD_SQUARE    | Button 4 |
+|PAD_TRIANGLE  | Button 3  |
+|PAD_L1        | Button 5  |
+|PAD_X         | Button 2  |
+|PAD_CIRCLE    | Button 1  |
+|PAD_R1        | Button 6  |
+|PAD_SELECT    | Button 7  |
+|PAD_START     | Button 8  |
 
 ## Other Info
 * see [wiki](https://github.com/bigw00d/software-development-tips/tree/master/02_stm32)
