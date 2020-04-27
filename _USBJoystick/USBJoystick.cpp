@@ -41,12 +41,21 @@ bool USBJoystick::update(int16_t t, int16_t r, int16_t x, int16_t y, uint32_t bu
  
 bool USBJoystick::update() {
    HID_REPORT report;
+   int count = 0;
 
    // Fill the report according to the Joystick Descriptor
-   report.data[0] = _t & 0xff;            
-   report.data[1] = _r & 0xff;               
-   report.data[2] = _x & 0xff;            
-   report.data[3] = _y & 0xff;
+   // report.data[0] = _t & 0xff;            
+   // report.data[1] = _r & 0xff;               
+   // report.data[2] = _x & 0xff;            
+   // report.data[3] = _y & 0xff;
+   report.data[count] = _t & 0xff;   
+   count++;         
+   report.data[count] = _r & 0xff;               
+   count++;         
+   report.data[count] = _x & 0xff;            
+   count++;         
+   report.data[count] = _y & 0xff;
+   count++;
 
 
 #if (BUTTONS4 == 1)               
@@ -56,11 +65,16 @@ bool USBJoystick::update() {
 
 
 //Use 4 bit padding for hat4 or hat8
-   report.data[4] = (_hat & 0x0f) ;                                      
+   // report.data[4] = (_hat & 0x0f) ;                                      
+   report.data[count] = (_hat & 0x0f) ;                                      
+   count++;
 
 //Use 4 bit padding for buttons   
-   report.data[5] = (_buttons & 0x0f) ;                                         
-   report.length = 6; 
+   // report.data[5] = (_buttons & 0x0f) ;                                         
+   report.data[count] = (_buttons & 0x0f) ;                                         
+   count++;
+   // report.length = 6; 
+   report.length = count; 
 #endif
 
 #if (BUTTONS8 == 1)               
@@ -72,23 +86,39 @@ bool USBJoystick::update() {
 //   report.length = 6; 
 
 //Use 4 bit padding for hat4 or hat8
-   report.data[4] = (_hat & 0x0f) ;                                      
+   // report.data[4] = (_hat & 0x0f) ;                                      
+   report.data[count] = (_hat & 0x0f) ;                                      
+   count++;
 
 //Use 8 bits for buttons   
-   report.data[5] = (_buttons & 0xff) ;
-   report.length = 6;
+   // report.data[5] = (_buttons & 0xff) ;
+   report.data[count] = (_buttons & 0x0f) ;                                         
+   count++;
+   // report.length = 6; 
+   report.length = count; 
 #endif
 
 #if (BUTTONS32 == 1)               
 //Use 4 bit padding for hat4 or hat8
-   report.data[4] = (_hat & 0x0f) ;
+   // report.data[4] = (_hat & 0x0f) ;
+   report.data[count] = (_hat & 0x0f) ;
+   count++;
 
 //No bit padding for 32 buttons                                         
-   report.data[5] = (_buttons >>  0) & 0xff;
-   report.data[6] = (_buttons >>  8) & 0xff;
-   report.data[7] = (_buttons >> 16) & 0xff;
-   report.data[8] = (_buttons >> 24) & 0xff;
-   report.length = 9;
+   report.data[count] = (_buttons >>  0) & 0xff;
+   count++;
+   report.data[count] = (_buttons >>  8) & 0xff;
+   count++;
+   report.data[count] = (_buttons >> 16) & 0xff;
+   count++;
+   report.data[count] = (_buttons >> 24) & 0xff;
+   count++;
+   report.length = count;
+   // report.data[5] = (_buttons >>  0) & 0xff;
+   // report.data[6] = (_buttons >>  8) & 0xff;
+   // report.data[7] = (_buttons >> 16) & 0xff;
+   // report.data[8] = (_buttons >> 24) & 0xff;
+   // report.length = 9;
 #endif
        
    return send(&report);

@@ -54,18 +54,7 @@ int main() {
             pc.printf("ps2btn: %04x ",ps2btn);
             pc.printf("buttons: %04x ",buttons);
         }
-        // pc.printf("%i ",ps2.read(PS_PAD :: PAD_L2));
-        // pc.printf("%i ",ps2.read(PS_PAD :: PAD_R2));
-        // pc.printf("%i ",ps2.read(PS_PAD :: PAD_L1));
-        // pc.printf("%i ",ps2.read(PS_PAD :: PAD_R1));
-        
-        // pc.printf("%i ",ps2.read(PS_PAD :: PAD_TRIANGLE));
-        // pc.printf("%i ",ps2.read(PS_PAD :: PAD_CIRCLE));
-        // pc.printf("%i ",ps2.read(PS_PAD :: PAD_X));
-        // pc.printf("%i ",ps2.read(PS_PAD :: PAD_SQUARE));
-        
-        // pc.printf("%i ",ps2.read(PS_PAD :: PAD_SELECT));
-        // pc.printf("%i ",ps2.read(PS_PAD :: PAD_START));
+
         joystick.buttons(buttons);
         
         // check move
@@ -81,41 +70,7 @@ int main() {
         joystick.update();
         wait(0.05);
     }
-    // while (1) {
-    //     switch (state) {
-    //         case 0: //case 0 .. 8: joystick move(UP, UPRIGHT, .. , NEUTRAL)
-    //         case 1:
-    //         case 2:
-    //         case 3:
-    //         case 4:
-    //         case 5:
-    //         case 6:
-    //         case 7:
-    //         case 8:
-    //             x = moveTable[state][0];  // value -127 .. 128
-    //             y = moveTable[state][1];  // value -127 .. 128
-    //             joystick.move(x, y);
-    //             break;
-    //         case 9:  //case 9 .. 16: joystick button(button1, button2, .. , button8)
-    //         case 10:
-    //         case 11:
-    //         case 12:
-    //         case 13:
-    //         case 14:
-    //         case 15:
-    //         case 16:
-    //             buttons = (0x01 << (state-9)) & 0xFF;   // value    0 .. 7, one bit per button     
-    //             joystick.buttons(buttons);
-    //             break;
-    //         default:
-    //             ;
-    //             break;
-    //     }
-    //     printf("state: %d\n", state);
-    //     state = (state + 1) % 17;
-    //     joystick.update();
-    //     wait(1);
-    // }
+
 }
 
 
