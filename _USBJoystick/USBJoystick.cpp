@@ -27,6 +27,8 @@
 #include "stdint.h"
 #include "USBJoystick.h"
 
+#define ORIGINAL_REPORT_DESC  1 // 1: 8button + XY
+
 bool USBJoystick::update(int16_t t, int16_t r, int16_t x, int16_t y, uint32_t buttons, uint8_t hat) {
 
    _t = t;
@@ -43,6 +45,21 @@ bool USBJoystick::update() {
    HID_REPORT report;
    int count = 0;
 
+#if (ORIGINAL_REPORT_DESC == 1)
+
+//Use 8 bits for buttons   
+   report.data[count] = (_buttons & 0xff) ;                                         
+   count++;
+
+//Use 2 bytes for move(x,y)
+   report.data[count] = _x & 0xff;            
+   count++;         
+   report.data[count] = _y & 0xff;
+   count++;
+
+   report.length = count; 
+
+#else // (ORIGINAL_REPORT_DESC == 1)
    // Fill the report according to the Joystick Descriptor
    report.data[count] = _t & 0xff;   
    count++;         
@@ -92,7 +109,9 @@ bool USBJoystick::update() {
    count++;
    report.length = count;
 #endif
-       
+
+#endif // (ORIGINAL_REPORT_DESC == 1)
+
    return send(&report);
 }
 
@@ -139,9 +158,37 @@ void USBJoystick::_init() {
    _hat = 0x00;              
 }
 
-
 uint8_t * USBJoystick::reportDesc() {    
          static uint8_t reportDescriptor[] = {
+#if (ORIGINAL_REPORT_DESC == 1)
+
+            USAGE_PAGE(1), 0x01,           // Generic Desktop           
+            USAGE(1), 0x04,                // Usage (Joystick)
+            COLLECTION(1), 0x01,           // Application
+               USAGE(1), 0x01,                 // Usage (Pointer)
+               COLLECTION(1), 0x00,            // Physical
+                  USAGE_PAGE(1), 0x09,            // Buttons
+                  USAGE_MINIMUM(1), 0x01,         // 1
+                  USAGE_MAXIMUM(1), 0x08,         // 8
+                  LOGICAL_MINIMUM(1), 0x00,       // 0
+                  LOGICAL_MAXIMUM(1), 0x01,       // 1
+                  REPORT_SIZE(1), 0x01,
+                  REPORT_COUNT(1), 0x08,
+                  UNIT_EXPONENT(1), 0x00,         // Unit_Exponent (0)
+                  UNIT(1), 0x00,                  // Unit (None)                                           
+                  INPUT(1), 0x02,                 // Data, Variable, Absolute
+                  USAGE_PAGE(1), 0x01,            // Generic Desktop
+                  USAGE(1), 0x30,                 // X
+                  USAGE(1), 0x31,                 // Y
+                  LOGICAL_MINIMUM(1), 0x81,       // -127
+                  LOGICAL_MAXIMUM(1), 0x7f,       // 127
+                  REPORT_SIZE(1), 0x08,
+                  REPORT_COUNT(1), 0x02,
+                  INPUT(1), 0x02,                 // Data, Variable, Absolute                  
+               END_COLLECTION(0),               
+            END_COLLECTION(0)
+
+#else // (ORIGINAL_REPORT_DESC == 1)
 
              USAGE_PAGE(1), 0x01,           // Generic Desktop           
              LOGICAL_MINIMUM(1), 0x00,      // Logical_Minimum (0)             
@@ -254,6 +301,8 @@ uint8_t * USBJoystick::reportDesc() {
 #endif
 
              END_COLLECTION(0)
+#endif // (ORIGINAL_REPORT_DESC == 1)
+
       };
 
       reportLength = sizeof(reportDescriptor);
