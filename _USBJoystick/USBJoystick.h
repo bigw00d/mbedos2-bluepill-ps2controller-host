@@ -129,8 +129,6 @@ class USBJoystick: public USBHID {
      /**
        * Write state of the joystick
        *
-       * @param t throttle position
-       * @param r rudder position         
        * @param x x-axis position
        * @param y y-axis position
        * @param buttons buttons state
