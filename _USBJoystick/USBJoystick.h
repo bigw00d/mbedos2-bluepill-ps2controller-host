@@ -30,15 +30,6 @@
 
 #define REPORT_ID_JOYSTICK  4
 
-//Configure Joystick
-#define HAT4      0
-#define HAT8      1
-
-#define BUTTONS4  0
-#define BUTTONS8  1
-#define BUTTONS32 0
-
-
 /* Common usage */
 enum JOY_BUTTON {
      JOY_B0 = 1,
@@ -46,29 +37,6 @@ enum JOY_BUTTON {
      JOY_B2 = 4,
      JOY_B3 = 8,     
 };
-
-#if (HAT4 == 1)
-enum JOY_HAT {
-     JOY_HAT_UP      = 0,
-     JOY_HAT_RIGHT   = 1,
-     JOY_HAT_DOWN    = 2,
-     JOY_HAT_LEFT    = 3,     
-     JOY_HAT_NEUTRAL = 4,          
-};
-#endif
-#if (HAT8 == 1)
-enum JOY_HAT {
-     JOY_HAT_UP         = 0,     
-     JOY_HAT_UP_RIGHT   = 1,
-     JOY_HAT_RIGHT      = 2,
-     JOY_HAT_RIGHT_DOWN = 3,
-     JOY_HAT_DOWN       = 4,
-     JOY_HAT_DOWN_LEFT  = 5,     
-     JOY_HAT_LEFT       = 6,     
-     JOY_HAT_LEFT_UP    = 7,          
-     JOY_HAT_NEUTRAL    = 8,          
-};
-#endif
 
 /* X, Y and T limits */
 /* These values do not directly map to screen pixels */
@@ -177,23 +145,7 @@ class USBJoystick: public USBHID {
        *
        * @returns true if there is no error, false otherwise
        */
-     bool update();
-
-     /**
-       * Move the throttle position
-       *
-       * @param t throttle position
-       * @returns true if there is no error, false otherwise
-       */
-     bool throttle(int16_t t);
-         
-     /**
-       * Move the rudder position
-       *
-       * @param r rudder position
-       * @returns true if there is no error, false otherwise
-       */        
-     bool rudder(int16_t r);         
+     bool update();      
 
      /**
        * Move the cursor to (x, y)
@@ -223,14 +175,6 @@ class USBJoystick: public USBHID {
      bool move_buttons(int16_t x, int16_t y, uint32_t buttons);
          
      /**
-       * Press hat
-       *
-       * @param hat hat state
-       * @returns true if there is no error, false otherwise
-       */
-     bool hat(uint8_t hat);
-         
-     /**
        * To define the report descriptor. Warning: this method has to store the length of the report descriptor in reportLength.
        *
        * @returns pointer to the report descriptor
@@ -238,12 +182,9 @@ class USBJoystick: public USBHID {
        virtual uint8_t * reportDesc();
 
    private:
-     int8_t _t;     
-     int8_t _r;              
      int8_t _x;                       
      int8_t _y;     
      uint32_t _buttons;
-     uint8_t _hat; 
          
      void _init();                 
 };

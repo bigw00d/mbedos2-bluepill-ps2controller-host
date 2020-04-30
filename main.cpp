@@ -28,14 +28,14 @@ int16_t moveTable[16][2] = {
     {0         , 0           },	//	---(0b1111)    
 };
 
-uint32_t ps2tojoypad(int ps2btn);
+uint32_t ps2tojoypad(int ps2movebtn);
 
 int main() {
     uint8_t ps2move = 0;    
     int16_t x = 0;
     int16_t y = 0;
     uint32_t buttons = 0;    
-    int ps2btn = 0;
+    int ps2movebtn = 0;
 
     confSysClock();         //Configure system clock (72MHz HSE clock, 48MHz USB clock)
 
@@ -48,8 +48,8 @@ int main() {
         ps2.poll();     
 
         // check button
-        ps2btn = ps2.read(PS_PAD :: BUTTONS);
-        buttons = ps2tojoypad(ps2btn);
+        ps2movebtn = ps2.read(PS_PAD :: BUTTONS);
+        buttons = ps2tojoypad(ps2movebtn);
         
         // check move
         ps2move = ps2.read_move();
@@ -63,8 +63,10 @@ int main() {
 }
 
 
-uint32_t ps2tojoypad(int ps2btn) {
+uint32_t ps2tojoypad(int ps2movebtn) {
     uint32_t joypadbtn = 0;
+    uint32_t ps2btn = ps2movebtn & ~(0x0080 | 0x0040 | 0x0020 | 0x0010); // remove move key :(PAD_LEFT | PAD_BOTTOM | PAD_RIGHT | PAD_TOP)
+
     switch (ps2btn) {
         // PAD_START:0x0008 -> ps2btn: 0x0080
         case 0x0008:
