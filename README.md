@@ -1,6 +1,7 @@
 # mbedos2-bluepill-ps2controller-host
 Bluepill host application for PS2 controller
-<img width="75%" src="./img/overview.png" />  
+<img width="75%" src="./img/overview2.png" />   
+ 
 
 ## Requirement
 
