@@ -74,18 +74,6 @@ menu: update submodule
 
 <img width="25%" src="./img/sourcetree_submodule.png" />  
 
-##  Button Mapping
-|PS2 Controller  |USB Joypad  |
-|---|---|
-|PAD_SQUARE    | Button 4 |
-|PAD_TRIANGLE  | Button 3  |
-|PAD_L1        | Button 5  |
-|PAD_X         | Button 2  |
-|PAD_CIRCLE    | Button 1  |
-|PAD_R1        | Button 6  |
-|PAD_SELECT    | Button 7  |
-|PAD_START     | Button 8  |
-
 ## Other Info
 * see [wiki](https://github.com/bigw00d/software-development-tips/tree/master/02_stm32)
 
