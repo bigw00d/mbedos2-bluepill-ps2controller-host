@@ -2,9 +2,6 @@
 Bluepill host application for PS2 controller
 <img width="75%" src="./img/overview.png" />  
 
-##  Button Mapping
-<img width="75%" src="./img/ButtonMappings.png" />  
-
 ## Requirement
 
 - [STM32F103C8T6 minimum Development Board(BluePill)](https://www.aitendo.com/product/13348)
