@@ -3,10 +3,10 @@
 #include "USBJoystick.h"
 #include "PS_PAD.h"
 
+#define BUTTON_NUM 8
+
 Serial      pc(PA_2, PA_3); // TX, RX
-
 PS_PAD      ps2(PA_7, PA_6, PA_5, PB_6);  //mosi=CMD,miso=DAT,clk=CLK,ss=SEL
-
 USBJoystick joystick;
 
 int16_t moveTable[16][2] = {
@@ -26,6 +26,17 @@ int16_t moveTable[16][2] = {
     {0         , 0           },	//	---(0b1101)    
     {0         , 0           },	//	---(0b1110)    
     {0         , 0           },	//	---(0b1111)    
+};
+
+uint32_t buttonFilter[BUTTON_NUM] = {
+    0x0008,	//	PAD_START
+    0x0001,	//	PAD_SELECT
+    0x8000,	//	PAD_SQUARE
+    0x4000,	//	PAD_X
+    0x2000,	//	PAD_CIRCLE
+    0x1000,	//	PAD_TRIANGLE
+    0x0400,	//	PAD_R1
+    0x0800	//	PAD_L1
 };
 
 uint32_t ps2tojoypad(int ps2movebtn);
@@ -64,45 +75,51 @@ int main() {
 
 
 uint32_t ps2tojoypad(int ps2movebtn) {
+    int i;
+    uint32_t targetButton = 0;
     uint32_t joypadbtn = 0;
     uint32_t ps2btn = ps2movebtn & ~(0x0080 | 0x0040 | 0x0020 | 0x0010); // remove move key :(PAD_LEFT | PAD_BOTTOM | PAD_RIGHT | PAD_TOP)
 
-    switch (ps2btn) {
-        // PAD_START:0x0008 -> ps2btn: 0x0080
-        case 0x0008:
-            joypadbtn = 0x0080;
-            break;
-        // PAD_SELECT:0x0001 -> ps2btn: 0x0040
-        case 0x0001:
-            joypadbtn = 0x0040;
-            break;
-        // PAD_SQUARE:0x8000 -> ps2btn: 0x0008
-        case 0x8000:
-            joypadbtn = 0x0008;
-            break;
-        // PAD_X:0x4000 -> ps2btn: 0x0002
-        case 0x4000:
-            joypadbtn = 0x0002;
-            break;
-        // PAD_CIRCLE:0x2000 -> ps2btn: 0x0001
-        case 0x2000:
-            joypadbtn = 0x0001;
-            break;
-        // PAD_TRIANGLE:0x1000 -> ps2btn: 0x0004
-        case 0x1000:
-            joypadbtn = 0x0004;
-            break;
-        // PAD_R1:0x0400 -> ps2btn: 0x0020
-        case 0x0400:
-            joypadbtn = 0x0020;
-            break;
-        // PAD_L1:0x0800 -> ps2btn: 0x0010
-        case 0x0800:
-            joypadbtn = 0x0010;
-            break;
-        default:
-            ;
-            break;
+    for ( i=0; i<BUTTON_NUM; i++ ) {
+        targetButton = ps2btn & buttonFilter[i];
+        switch (targetButton) {
+            // PAD_START:0x0008 -> usbPadButton: 0x0080
+            case 0x0008:
+                joypadbtn |= 0x0080;
+                break;
+            // PAD_SELECT:0x0001 -> usbPadButton: 0x0040
+            case 0x0001:
+                joypadbtn |= 0x0040;
+                break;
+            // PAD_SQUARE:0x8000 -> usbPadButton: 0x0008
+            case 0x8000:
+                joypadbtn |= 0x0008;
+                break;
+            // PAD_X:0x4000 -> usbPadButton: 0x0002
+            case 0x4000:
+                joypadbtn |= 0x0002;
+                break;
+            // PAD_CIRCLE:0x2000 -> usbPadButton: 0x0001
+            case 0x2000:
+                joypadbtn |= 0x0001;
+                break;
+            // PAD_TRIANGLE:0x1000 -> usbPadButton: 0x0004
+            case 0x1000:
+                joypadbtn |= 0x0004;
+                break;
+            // PAD_R1:0x0400 -> usbPadButton: 0x0020
+            case 0x0400:
+                joypadbtn |= 0x0020;
+                break;
+            // PAD_L1:0x0800 -> usbPadButton: 0x0010
+            case 0x0800:
+                joypadbtn |= 0x0010;
+                break;
+            default:
+                ;
+                break;
+        }
     }
+
     return joypadbtn;
 }
