@@ -120,7 +120,8 @@ class USBJoystick: public USBHID {
 //     USBJoystick(uint16_t vendor_id = 0x1234, uint16_t product_id = 0x0100, uint16_t product_release = 0x0001, int waitForConnect = true):    // 4 buttons, no padding on buttons
 //     USBJoystick(uint16_t vendor_id = 0x1234, uint16_t product_id = 0x0500, uint16_t product_release = 0x0001, int waitForConnect = true):    // 8 buttons, no padding on buttons
 //     USBJoystick(uint16_t vendor_id = 0x1234, uint16_t product_id = 0x0600, uint16_t product_release = 0x0001, int waitForConnect = true):    // 32 buttons, no padding on buttons
-     USBJoystick(uint16_t vendor_id = 0x1234, uint16_t product_id = 0x0500, uint16_t product_release = 0x0001, int waitForConnect = true):    // 8 buttons, no padding on buttons
+     USBJoystick(uint16_t vendor_id = 0x0583, uint16_t product_id = 0x2060, uint16_t product_release = 0x0001, int waitForConnect = true):    // Buffalo USB JoyStick
+
        USBHID(0, 0, vendor_id, product_id, product_release, false) {
          _init();
          connect(waitForConnect);

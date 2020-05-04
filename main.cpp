@@ -5,6 +5,7 @@
 
 #define BUTTON_NUM 8
 
+DigitalOut led(PC_13);
 Serial      pc(PA_2, PA_3); // TX, RX
 PS_PAD      ps2(PA_7, PA_6, PA_5, PB_6);  //mosi=CMD,miso=DAT,clk=CLK,ss=SEL
 USBJoystick joystick;
@@ -53,6 +54,9 @@ int main() {
     pc.baud(115200);
     printf("hello, Mbed.\n");
     ps2.init();
+
+    // led = 1; //led off
+    led = 0; //led on
 
     while(1)
     {   
