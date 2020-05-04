@@ -4,12 +4,19 @@
 #include "PS_PAD.h"
 #include "USBMouseKeyboard.h"
 
-#define BUTTON_NUM 8
-#define COUNT_3_SEC 30
+#define BUTTON_NUM (8)
+#define COUNT_3_SEC (30)
+#define COUNT_1_SEC (10)
+#define WAIT_100MSEC (0.1)
+
+enum MODE {
+    MODE_JOYSTICK,
+    MODE_MOUSE,
+};
 
 DigitalOut led(PC_13);
 Serial      pc(PA_2, PA_3); // TX, RX
-// PS_PAD      ps2(PA_7, PA_6, PA_5, PB_6);  //mosi=CMD,miso=DAT,clk=CLK,ss=SEL
+PS_PAD      ps2(PA_7, PA_6, PA_5, PB_6);  //mosi=CMD,miso=DAT,clk=CLK,ss=SEL
 // USBJoystick joystick;
 
 static Timer timer;
@@ -74,6 +81,7 @@ uint32_t buttonFilter[BUTTON_NUM] = {
 
 uint32_t ps2tojoypad(int ps2movebtn);
 
+int checkMode(void);
 void joypadMode(void);
 void mouseMode(void);
 
@@ -100,19 +108,34 @@ int main() {
 
     pc.baud(115200);
     printf("hello, Mbed.\n");
-    // ps2.init();
+    ps2.init();
 
-    // led = 1; //led off
-    led = 0; //led on
+    led = 1; //led off
+    // led = 0; //led on
 
-     __disable_irq( );
+    //  __disable_irq( );
     // configure timer
     // timer.start( );
-    ticker.attach_us( tickHandler, 100000 ); // reset timer every 100msec
-     __enable_irq( );
+    // ticker.attach_us( tickHandler, 100000 ); // reset timer every 100msec
+    //  __enable_irq( );
 
-    // joypadMode();
-    mouseMode();
+    // int mode = checkMode();
+    int mode = MODE_JOYSTICK;
+    switch (mode) {
+        case MODE_JOYSTICK:
+        default:
+            joypadMode();
+            break;
+        case MODE_MOUSE:
+            mouseMode();
+            break;
+    }
+
+    // while(1)
+    // {
+    //     joypadMode();
+    //     mouseMode();
+    // }
 
     // while(1)
     // {   
@@ -133,9 +156,48 @@ int main() {
 
 }
 
+int checkMode() {
+    int mode = MODE_JOYSTICK;
+    uint8_t ps2move = 0;    
+    uint32_t buttons = 0;    
+    int ps2movebtn = 0;
+    int i;
+
+    led = 0; //led on
+    longPushCnt = 0;
+
+    for (i = 0; i < COUNT_3_SEC; i ++) { // mode judge time: 3 sec(= 100ms x 30)
+        ps2.poll();     
+
+        // check button
+        ps2movebtn = ps2.read(PS_PAD :: BUTTONS);
+        buttons = ps2tojoypad(ps2movebtn);
+
+        if ( buttons & 0x0080 ) { // START
+            if ( buttons & 0x0040 ) { // SELECT
+                longPushCnt++;
+            }
+            else {
+                longPushCnt = 0;
+            }
+        }
+        else {
+            longPushCnt = 0;
+        }
+
+        wait(WAIT_100MSEC); // 100ms
+    }
+
+    if( longPushCnt >= (COUNT_3_SEC - COUNT_1_SEC) ) { // 3sec(mergin:1sec)
+        mode = MODE_MOUSE;
+    }
+
+    return mode;
+}
+
 void mouseMode() {
     USBMouseKeyboard key_mouse;
-    PS_PAD      ps2(PA_7, PA_6, PA_5, PB_6);  //mosi=CMD,miso=DAT,clk=CLK,ss=SEL
+    // PS_PAD      ps2(PA_7, PA_6, PA_5, PB_6);  //mosi=CMD,miso=DAT,clk=CLK,ss=SEL
     // USBJoystick joystick;
 
     uint8_t ps2move = 0;    
@@ -144,15 +206,18 @@ void mouseMode() {
     uint32_t buttons = 0;    
     int ps2movebtn = 0;
 
-    ps2.init();
+    // ps2.init();
+
+    led = 0; //led on
 
     while(1)
     {
         // check ticks
-        if(ticks >= COUNT_3_SEC) { // 3sec
-            ticks = 0;
-            led = !led; // toggle led
-        }
+        // if(ticks >= COUNT_3_SEC) { // 3sec
+        //     ticks = 0;
+        //     key_mouse.disconnect();
+        //     break; // retire mode
+        // }
 
         ps2.poll();     
 
@@ -202,7 +267,7 @@ void mouseMode() {
 }
 
 void joypadMode() {
-    PS_PAD      ps2(PA_7, PA_6, PA_5, PB_6);  //mosi=CMD,miso=DAT,clk=CLK,ss=SEL
+    // PS_PAD      ps2(PA_7, PA_6, PA_5, PB_6);  //mosi=CMD,miso=DAT,clk=CLK,ss=SEL
     USBJoystick joystick;
 
     uint8_t ps2move = 0;    
@@ -211,15 +276,19 @@ void joypadMode() {
     uint32_t buttons = 0;    
     int ps2movebtn = 0;
 
-    ps2.init();
+    // ps2.init();
+
+    led = 1; //led off
 
     while(1)
     {
         // check ticks
-        if(ticks >= COUNT_3_SEC) { // 3sec
-            ticks = 0;
-            led = !led; // toggle led
-        }
+        // if(ticks >= COUNT_3_SEC) { // 3sec
+        //     ticks = 0;
+        //     // led = !led; // toggle led
+        //     joystick.disconnect();
+        //     break; // retire mode
+        // }
 
         ps2.poll();     
 
