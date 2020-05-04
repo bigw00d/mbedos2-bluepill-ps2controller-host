@@ -7,8 +7,8 @@
 
 DigitalOut led(PC_13);
 Serial      pc(PA_2, PA_3); // TX, RX
-PS_PAD      ps2(PA_7, PA_6, PA_5, PB_6);  //mosi=CMD,miso=DAT,clk=CLK,ss=SEL
-USBJoystick joystick;
+// PS_PAD      ps2(PA_7, PA_6, PA_5, PB_6);  //mosi=CMD,miso=DAT,clk=CLK,ss=SEL
+// USBJoystick joystick;
 
 int16_t moveTable[16][2] = {
     {0         , 0           },	//	NEUTRAL(0b0000)    
@@ -42,21 +42,61 @@ uint32_t buttonFilter[BUTTON_NUM] = {
 
 uint32_t ps2tojoypad(int ps2movebtn);
 
+void joypadMode(void);
+void mouseMode(void);
+
 int main() {
+    // uint8_t ps2move = 0;    
+    // int16_t x = 0;
+    // int16_t y = 0;
+    // uint32_t buttons = 0;    
+    // int ps2movebtn = 0;
+
+    confSysClock();         //Configure system clock (72MHz HSE clock, 48MHz USB clock)
+
+    pc.baud(115200);
+    printf("hello, Mbed.\n");
+    // ps2.init();
+
+    // led = 1; //led off
+    led = 0; //led on
+
+    joypadMode();
+
+    // while(1)
+    // {   
+    //     ps2.poll();     
+
+    //     // check button
+    //     ps2movebtn = ps2.read(PS_PAD :: BUTTONS);
+    //     buttons = ps2tojoypad(ps2movebtn);
+        
+    //     // check move
+    //     ps2move = ps2.read_move();
+    //     ps2move &= 0x0F;
+    //     x = moveTable[ps2move][0];  // value -127 .. 128
+    //     y = moveTable[ps2move][1];  // value -127 .. 128
+    //     joystick.move_buttons(x, y, buttons);
+    //     wait(0.05);
+    // }
+
+}
+
+void mouseMode() {
+    ;
+}
+
+void joypadMode() {
+    PS_PAD      ps2(PA_7, PA_6, PA_5, PB_6);  //mosi=CMD,miso=DAT,clk=CLK,ss=SEL
+    USBJoystick joystick;
+
     uint8_t ps2move = 0;    
     int16_t x = 0;
     int16_t y = 0;
     uint32_t buttons = 0;    
     int ps2movebtn = 0;
 
-    confSysClock();         //Configure system clock (72MHz HSE clock, 48MHz USB clock)
-
-    pc.baud(115200);
-    printf("hello, Mbed.\n");
     ps2.init();
-
-    // led = 1; //led off
-    led = 0; //led on
 
     while(1)
     {   
@@ -76,7 +116,6 @@ int main() {
     }
 
 }
-
 
 uint32_t ps2tojoypad(int ps2movebtn) {
     int i;
