@@ -159,7 +159,25 @@ void mouseMode() {
         // check button
         ps2movebtn = ps2.read(PS_PAD :: BUTTONS);
         buttons = ps2tojoypad(ps2movebtn);
-        
+
+        if( buttons & 0x0002 ) { // PAD_X
+            // 左側がタッチされている状態
+            key_mouse.press(MOUSE_LEFT);  // マウス左クリックをクリックした状態にする
+        }
+        else {
+            // タッチされていない状態
+            key_mouse.release(MOUSE_LEFT);  // マウス左クリックを解放した状態にする
+        }
+
+        if( buttons & 0x0001 ) { // PAD_CIRCLE
+            // 右側がタッチされている状態
+            key_mouse.press(MOUSE_RIGHT); // マウス右クリックをクリックした状態にする
+        }
+        else {
+            // タッチされていない状態
+            key_mouse.release(MOUSE_RIGHT); // マウス右クリックを解放した状態にする
+        }
+
         if ( buttons & 0x0080 ) { // START
             if ( buttons & 0x0040 ) { // SELECT
                 longPushCnt++;
