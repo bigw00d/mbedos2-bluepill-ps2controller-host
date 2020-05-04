@@ -30,7 +30,21 @@ Bluepill host application for PS2 controller
 |SEL  | PB_6 |insert 1k pull-up to 5V|
 |CLK  | PA_5 ||
 
-### Programmer
+### Controller Connection
+
+<img width="30%" src="./img/ps2connector.png" />   
+
+1. Data
+1. CMD
+1. NC (No Connection)
+1. GND
+1. 3V3
+1. SEL
+1. CLK
+1. NC 
+1. NC
+
+### Programmer Connection
 <img width="80%" src="./img/bluepill_with_stlinkv2.png" />  
 
 
