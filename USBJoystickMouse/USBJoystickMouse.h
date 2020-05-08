@@ -50,8 +50,8 @@ class USBJoystickMouse: public USBHID {
      */
     // 8 buttons, no padding on buttons
     //     USBJoystickMouse(uint16_t vendor_id = 0x1234, uint16_t product_id = 0x0500, uint16_t product_release = 0x0001, int waitForConnect = true):
-    // caution: set vendor_id & product_id
-    USBJoystickMouse(uint16_t vendor_id = 0x????, uint16_t product_id = ????,, uint16_t product_release = 0x0001, int waitForConnect = true):
+    // caution: set vendor_id & product_id aas you favorite controller
+    USBJoystickMouse(uint16_t vendor_id = 0x1234, uint16_t product_id = 0x0500, uint16_t product_release = 0x0001, int waitForConnect = true):
       USBHID(0, 0, vendor_id, product_id, product_release, false) {
         init();
         connect(waitForConnect);

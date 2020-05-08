@@ -65,9 +65,9 @@ Bluepill host application for PS2 controller
 C:\WorkSpace\mbedos2-bluepill-ps2controller-host> pip install -r .\tools\requirements.txt
 C:\WorkSpace\mbedos2-bluepill-ps2controller-host> pip install mbed-cli==1.10.1 pyelftools jsonschema
 ```
-2. Change Vender ID & Product ID(USBJoystick.h)
+2. Change vendor_id & product_id aas you favorite controller(USBJoystickMouse.h)
 ```txt
-     USBJoystick(uint16_t vendor_id = 0x????, uint16_t product_id = 0x????, uint16_t product_release = 0x0001, int waitForConnect = true):    // Buffalo USB JoyStick
+    USBJoystickMouse(uint16_t vendor_id = 0x1234, uint16_t product_id = 0x0500, uint16_t product_release = 0x0001, int waitForConnect = true):
 ```
 
 3. Build & upload project
