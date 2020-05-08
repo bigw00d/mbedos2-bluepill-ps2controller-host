@@ -11,18 +11,6 @@
 #define REPORT_ID_CUSTOM_JOYSTICK 1
 #define REPORT_ID_CUSTOM_MOUSE 2
 
-/* Mouse X, Y move value */
-#define MX_MIN_ABS    (-20)
-#define MY_MIN_ABS    (-20)
-#define MX_MAX_ABS    (20)
-#define MY_MAX_ABS    (20)
-
-/* Joypad X, Y limits */
-#define JX_MIN_ABS    (-127)     /*!< The maximum value that we can move to the left on the x-axis */
-#define JY_MIN_ABS    (-127)     /*!< The maximum value that we can move up on the y-axis */
-#define JX_MAX_ABS    (127)      /*!< The maximum value that we can move to the right on the x-axis */
-#define JY_MAX_ABS    (127)      /*!< The maximum value that we can move down on the y-axis */
-
 /* Joypad Button Bit */
 #define JOYPAD_BTN1    0x0001
 #define JOYPAD_BTN2    0x0002
