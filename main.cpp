@@ -8,6 +8,24 @@
 #define COUNT_1_SEC (10)
 #define WAIT_100MSEC (0.1)
 
+/* Mouse X, Y move value */
+#define MX_MIN_ABS    (-5)
+#define MY_MIN_ABS    (-5)
+#define MX_MAX_ABS    (5)
+#define MY_MAX_ABS    (5)
+
+#define MX_MAX_MOVE   (30)
+#define MX_MIN_MOVE   (-30)
+#define MY_MAX_MOVE   (30)
+#define MY_MIN_MOVE   (-30)
+
+
+/* Joypad X, Y limits */
+#define JX_MIN_ABS    (-127)     /*!< The maximum value that we can move to the left on the x-axis */
+#define JY_MIN_ABS    (-127)     /*!< The maximum value that we can move up on the y-axis */
+#define JX_MAX_ABS    (127)      /*!< The maximum value that we can move to the right on the x-axis */
+#define JY_MAX_ABS    (127)      /*!< The maximum value that we can move down on the y-axis */
+
 DigitalOut led(PC_13); //BluePill Default LED
 Serial      pc(PA_2, PA_3); // TX, RX
 PS_PAD      ps2(PA_7, PA_6, PA_5, PB_6);  //mosi=CMD,miso=DAT,clk=CLK,ss=SEL
@@ -110,6 +128,8 @@ void mouseMode() {
     uint8_t ps2move = 0;    
     int16_t x = 0;
     int16_t y = 0;
+    int16_t dx = 0;
+    int16_t dy = 0;
     uint32_t buttons = 0;    
     int ps2movebtn = 0;
 
@@ -163,8 +183,24 @@ void mouseMode() {
         // check move
         ps2move = ps2.read_move();
         ps2move &= 0x0F;
-        x = moveMouseTable[ps2move][0];  // value -127 .. 128
-        y = moveMouseTable[ps2move][1];  // value -127 .. 128
+        dx = moveMouseTable[ps2move][0];
+        dy = moveMouseTable[ps2move][1];
+        if (dx != 0) {
+            if( ((x+dx) <= MX_MAX_MOVE) && ((x+dx) >= MX_MIN_MOVE) ) {
+                x += dx;
+            }
+        }
+        else {
+            x = 0;
+        }
+        if (dy != 0) {
+            if( ((y+dy) <= MY_MAX_MOVE) && ((y+dy) >= MY_MIN_MOVE) ) {
+                y += dy;
+            }
+        }
+        else {
+            y = 0;
+        }
         joymouse.mouseMove(x, y);
         wait(0.05);
     }
