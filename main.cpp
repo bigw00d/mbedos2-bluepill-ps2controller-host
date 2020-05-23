@@ -3,7 +3,11 @@
 #include "USBJoystickMouse.h"
 #include "PS_PAD.h"
 
+#ifdef SPEC_PSFOUR
+#define BUTTON_NUM (10)
+#else
 #define BUTTON_NUM (8)
+#endif
 #define COUNT_3_SEC (30)
 #define COUNT_1_SEC (10)
 #define WAIT_100MSEC (0.1)
@@ -27,7 +31,7 @@
 #define JY_MAX_ABS    (127)      /*!< The maximum value that we can move down on the y-axis */
 
 DigitalOut led(PC_13); //BluePill Default LED
-Serial      pc(PA_2, PA_3); // TX, RX
+// Serial      pc(PA_2, PA_3); // TX, RX
 PS_PAD      ps2(PA_7, PA_6, PA_5, PB_6);  //mosi=CMD,miso=DAT,clk=CLK,ss=SEL
 USBJoystickMouse joymouse;
 
@@ -36,6 +40,25 @@ static Ticker ticker;
 static uint8_t ticks = 0;
 static uint32_t longPushCnt = 0;
 static uint32_t oldLongPushCnt = 0;
+
+uint8_t hatTable[16] = {
+	0x0F,	//	NEUTRAL(0b0000)    
+	6,	//	LEFT(0b0001)       
+	4,	//	DOWN(0b0010)       
+	5,	//	DOWNLEFT(0b0011)  
+	2,	//	RIGHT(0b0100)      
+	0x0F,	//	---(0b0101)    
+	3,	//	RIGHTDOWN(0b0110) 
+	0x0F,	//	---(0b0111)    
+	0,	//	UP(0b1000)         
+	7,	//	LEFTUP(0b1001)    
+	0x0F,	//	---(0b1010)    
+	0x0F,	//	---(0b1011)    
+	1,	//	UPRIGHT(0b1100)   
+	0x0F,	//	---(0b1101)    
+	0x0F,	//	---(0b1110)    
+	0x0F,	//	---(0b1111)
+};
 
 int16_t moveTable[16][2] = {
     {0         , 0           },	//	NEUTRAL(0b0000)    
@@ -83,7 +106,9 @@ uint32_t buttonFilter[BUTTON_NUM] = {
     0x2000,	//	PAD_CIRCLE
     0x1000,	//	PAD_TRIANGLE
     0x0400,	//	PAD_R1
-    0x0800	//	PAD_L1
+    0x0800,	//	PAD_L1
+    0x0200,	//	PAD_R2
+    0x0100	//	PAD_L2
 };
 
 uint32_t ps2tojoypad(int ps2movebtn);
@@ -105,8 +130,8 @@ int main() {
 
     confSysClock();         //Configure system clock (72MHz HSE clock, 48MHz USB clock)
 
-    pc.baud(115200);
-    printf("hello, Mbed.\n");
+    // pc.baud(115200);
+    // pc.printf("hello, Mbed.\n");
     ps2.init();
 
     led = 1; //led off
@@ -216,8 +241,91 @@ void joypadMode() {
 
     led = 1; //led off
 
+    uint32_t _buttons;  // joypad
+
+    // wait(10.0); //+:test
+
+    JoyPadStruct joypad;
+    Ps2AnalogStruct analog;
+
     while(1)
     {
+        // test mode
+        // switch (ps2move) {
+        //     case 0:
+        //         joymouse._dirx = 255;
+        //         joymouse._diry = 0;
+        //         joymouse._dirz = 0;
+        //         break;
+        //     case 1:
+        //         joymouse._dirx = 0;
+        //         joymouse._diry = 255;
+        //         joymouse._dirz = 0;
+        //         break;
+        //     case 2:
+        //         joymouse._dirx = 0;
+        //         joymouse._diry = 0;
+        //         joymouse._dirz = 255;
+        //         break;
+        //     case 3:
+        //         joymouse._rotx = 255;
+        //         joymouse._roty = 0;
+        //         joymouse._rotz = 0;
+        //         break;
+        //     case 4:
+        //         joymouse._rotx = 0;
+        //         joymouse._roty = 255;
+        //         joymouse._rotz = 0;
+        //         break;
+        //     case 5:
+        //         joymouse._rotx = 0;
+        //         joymouse._roty = 0;
+        //         joymouse._rotz = 255;
+        //         break;
+        //     case 6:
+        //     case 7:
+        //     case 8:
+        //     case 9:
+        //     case 10:
+        //     case 11:
+        //     case 12:
+        //     case 13:
+        //         joymouse._hat = (ps2move - 6);
+        //         break;
+        //     case 14:
+        //     case 15:
+        //     case 16:
+        //     case 17:
+        //     case 18:
+        //     case 19:
+        //     case 20:
+        //     case 21:
+        //     case 22:
+        //     case 23:
+        //     case 24:
+        //     case 25:
+        //     case 26:
+        //     case 27:
+        //         joymouse._buttons = 0x00000001 << (ps2move - 14);
+        //         break;
+        //     default:
+        //         break;
+        // }
+        // joymouse.sendJoyPadReport();
+        // ps2move++;
+        // if (ps2move >= 27) {
+        //     ps2move = 0;
+        //     joymouse._buttons = 0x00000000;
+        //     joymouse._dirx = 0;
+        //     joymouse._diry = 0;
+        //     joymouse._dirz = 0;
+        //     joymouse._rotx = 0;
+        //     joymouse._roty = 0;
+        //     joymouse._rotz = 0;
+        //     joymouse._hat = 0;
+        // }
+        // wait(1.0);
+
         // check ticks
         if(ticks >= COUNT_3_SEC) { // 3sec
             ticks = 0;
@@ -228,8 +336,64 @@ void joypadMode() {
 
         // check button
         ps2movebtn = ps2.read(PS_PAD :: BUTTONS);
+        // pc.printf("ps2movebtn: %08X\n", ps2movebtn);
+
+        // ps2move = ps2.read(PS_PAD :: ANALOG_RX);
+        // pc.printf("ANALOG_RX: %d\n", ps2move);
+        // ps2move = ps2.read(PS_PAD :: ANALOG_RY);
+        // pc.printf("ANALOG_RY: %d\n", ps2move);
+        // ps2move = ps2.read(PS_PAD :: ANALOG_LX);
+        // pc.printf("ANALOG_LX: %d\n", ps2move);
+        // ps2move = ps2.read(PS_PAD :: ANALOG_LY);
+        // pc.printf("ANALOG_LY: %d\n", ps2move);
+
+        #ifdef  SPEC_PSFOUR
+        joypad.buttons = ps2tojoypad(ps2movebtn);
+        // pc.printf("buttons: %08X\n", buttons);
+
+        if ( buttons & 0x0080 ) { // START
+            if ( buttons & 0x0040 ) { // SELECT
+                longPushCnt++;
+            }
+            else {
+                longPushCnt = 0;
+            }
+        }
+        else {
+            longPushCnt = 0;
+        }
+
+        // check move
+        ps2move = ps2.read_move();
+        ps2move &= 0x0F;
+        joypad.hat = hatTable[ps2move];
+        analog = ps2.read_analog();
+        joypad.dirx = (255 - analog.ly);
+        joypad.diry = analog.lx;
+        joypad.dirz = (255 - analog.ry);
+        // PAD_R2:0x0200
+        if ((ps2movebtn & 0x0200) > 0) {
+            joypad.roty = 255;
+        }
+        else {
+            joypad.roty = 0;
+        }
+        // PAD_L2:0x0100
+        if ((ps2movebtn & 0x0100) > 0) {
+            joypad.rotx = 255;
+        }
+        else {
+            joypad.rotx = 0;
+        }
+        joypad.rotz = analog.rx;
+        joymouse.joypadUpdate(joypad);
+        wait(0.05);
+
+        #else
+
         buttons = ps2tojoypad(ps2movebtn);
-        
+        // pc.printf("buttons: %08X\n", buttons);
+
         if ( buttons & 0x0080 ) { // START
             if ( buttons & 0x0040 ) { // SELECT
                 longPushCnt++;
@@ -249,6 +413,7 @@ void joypadMode() {
         y = moveTable[ps2move][1];  // value -127 .. 128
         joymouse.joypadUpdate(x, y, buttons);
         wait(0.05);
+        #endif
     }
 
 }
@@ -261,6 +426,61 @@ uint32_t ps2tojoypad(int ps2movebtn) {
 
     for ( i=0; i<BUTTON_NUM; i++ ) {
         targetButton = ps2btn & buttonFilter[i];
+        #ifdef SPEC_PSFOUR
+        switch (targetButton) {
+            // PAD_START:0x0008
+            case 0x0008:
+                joypadbtn |= JOYPAD_BTN10;
+                break;
+            // PAD_SELECT:0x0001
+            case 0x0001:
+                joypadbtn |= JOYPAD_BTN9;
+                break;
+            // PAD_SQUARE:0x8000
+            case 0x8000:
+                joypadbtn |= JOYPAD_BTN1;
+                break;
+            // PAD_X:0x4000
+            case 0x4000:
+                joypadbtn |= JOYPAD_BTN2;
+                break;
+            // PAD_CIRCLE:0x2000
+            case 0x2000:
+                joypadbtn |= JOYPAD_BTN3;
+                break;
+            // PAD_TRIANGLE:0x1000
+            case 0x1000:
+                joypadbtn |= JOYPAD_BTN4;
+                break;
+            // PAD_R1:0x0400
+            case 0x0400:
+                joypadbtn |= JOYPAD_BTN5;
+                break;
+            // PAD_L1:0x0800
+            case 0x0800:
+                joypadbtn |= JOYPAD_BTN6;
+                break;
+            // PAD_R2:0x0200
+            case 0x0200:
+                joypadbtn |= JOYPAD_BTN8;
+                break;
+            // PAD_L2:0x0100
+            case 0x0100:
+                joypadbtn |= JOYPAD_BTN7;
+                break;
+            // PAD_LEFT_STICK:0x0002
+            case 0x0002:
+                joypadbtn |= JOYPAD_BTN11;
+                break;
+            // PAD_RIGHT_STICK:0x0004
+            case 0x0004:
+                joypadbtn |= JOYPAD_BTN12;
+                break;
+            default:
+                ;
+                break;
+        }
+        #else
         switch (targetButton) {
             // PAD_START:0x0008 -> usbPadButton: 0x0080
             case 0x0008:
@@ -298,6 +518,7 @@ uint32_t ps2tojoypad(int ps2movebtn) {
                 ;
                 break;
         }
+        #endif
     }
 
     return joypadbtn;

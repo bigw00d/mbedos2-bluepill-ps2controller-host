@@ -8,7 +8,7 @@
 
 #include "USBHID.h"
 
-#define SPEC_PSFOUR
+#define SPEC_PSFOUR 1
 
 #define REPORT_ID_CUSTOM_JOYSTICK 1
 #define REPORT_ID_CUSTOM_MOUSE 2
@@ -22,11 +22,28 @@
 #define JOYPAD_BTN6    0x0020
 #define JOYPAD_BTN7    0x0040
 #define JOYPAD_BTN8    0x0080
+#define JOYPAD_BTN9    0x0100
+#define JOYPAD_BTN10    0x0200
+#define JOYPAD_BTN11    0x0400
+#define JOYPAD_BTN12    0x0800
+#define JOYPAD_BTN13    0x1000
+#define JOYPAD_BTN14    0x2000
 
 /* Mouse Button Bit */
 #define MOUSE_LEFT      0x01
 #define MOUSE_RIGHT     0x02
 #define MOUSE_MIDDLE    0x04
+
+typedef struct JoyPadStruct {
+    uint8_t dirx;
+    uint8_t diry;
+    uint8_t dirz;
+    uint8_t rotx;
+    uint8_t roty;
+    uint8_t rotz;
+    uint8_t hat;
+    uint32_t buttons;
+} joypad_Type;
 
 class USBJoystickMouse: public USBHID {
   public:
@@ -62,6 +79,8 @@ class USBJoystickMouse: public USBHID {
      */
     bool joypadUpdate(int16_t x, int16_t y, uint32_t buttons);
 
+    bool joypadUpdate(JoyPadStruct joypad);
+
     /**
     * Press one or several buttons
     *
@@ -94,15 +113,25 @@ class USBJoystickMouse: public USBHID {
      */
     virtual uint8_t * reportDesc();
 
+    // public for test
+    uint8_t _dirx;                       
+    uint8_t _diry;     
+    uint8_t _dirz;     
+    uint8_t _rotx;                       
+    uint8_t _roty;     
+    uint8_t _rotz;     
+    uint8_t _hat;     
+    uint32_t _buttons;  // joypad
+    bool sendJoyPadReport();
+
   private:
     int8_t _x;                       
     int8_t _y;     
-    uint32_t _buttons;  // joypad
+    // uint32_t _buttons;  // joypad
     uint8_t _button;    // mouse
-        
     void init();                 
 
-    bool sendJoyPadReport();
+    // bool sendJoyPadReport();
     bool sendMouseReport(int8_t x, int8_t y, uint8_t buttons, int8_t z);
     bool mouseUpdate(int16_t x, int16_t y, uint8_t buttons, int8_t z);
 

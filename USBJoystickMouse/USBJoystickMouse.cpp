@@ -13,6 +13,35 @@ bool USBJoystickMouse::sendJoyPadReport() {
    report.data[count] = REPORT_ID_CUSTOM_JOYSTICK;
    count++;
 
+#ifdef SPEC_PSFOUR
+//4 bytes for Direction X, Y, Z, Rotate-Z(0 to 255)
+   report.data[count] = _dirx & 0xff;            
+   count++;         
+   report.data[count] = _diry & 0xff;
+   count++;
+   report.data[count] = _dirz & 0xff;            
+   count++;         
+   report.data[count] = _rotz & 0xff;
+   count++;
+
+//4 bits for Hat Switch(0 to 7)
+//14 bits for Buttons(0 to 1)
+//6 bits for unk(dummy)
+   report.data[count] = ((_buttons & 0x0f) << 4) | (_hat & 0x0f) ; //buttons(4bit) + hat(4bit)
+   count++;
+   report.data[count] = (_buttons >>  4) & 0xff;   //buttons(8bit)
+   count++;
+   report.data[count] = (_buttons >>  12) & 0x03;  //buttons(2bit)
+   count++;
+
+//2 bytes for Rotate-X, Y(0 to 255)
+   report.data[count] = _rotx & 0xff;
+   count++;
+   report.data[count] = _roty & 0xff;
+   count++;
+
+   report.length = count; 
+#else
 //Use 8 bits for buttons   
    report.data[count] = (_buttons & 0xff) ;                                         
    count++;
@@ -24,6 +53,7 @@ bool USBJoystickMouse::sendJoyPadReport() {
    count++;
 
    report.length = count; 
+#endif // SPEC_PSFOUR
 
    return send(&report);
 }
@@ -32,6 +62,19 @@ bool USBJoystickMouse::joypadUpdate(int16_t x, int16_t y, uint32_t buttons) {
    _x = x;
    _y = y;
    _buttons = buttons;
+   return sendJoyPadReport();
+}
+
+bool USBJoystickMouse::joypadUpdate(JoyPadStruct joypad) {
+   _buttons = joypad.buttons;
+   _dirx = joypad.dirx;
+   _diry = joypad.diry;
+   _dirz = joypad.dirz;
+   _rotx = joypad.rotx;
+   _roty = joypad.roty;
+   _rotz = joypad.rotz;
+   _hat = joypad.hat;
+
    return sendJoyPadReport();
 }
 
@@ -86,6 +129,13 @@ void USBJoystickMouse::init() {
    _x = 0;                       
    _y = 0;     
    _buttons = 0x00000000;
+   _dirx = 0;
+   _diry = 0;
+   _dirz = 0;
+   _rotx = 0;
+   _roty = 0;
+   _rotz = 0;
+   _hat = 0;
 }
 
 uint8_t * USBJoystickMouse::reportDesc() {    

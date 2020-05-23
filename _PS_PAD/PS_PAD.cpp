@@ -64,6 +64,19 @@ int PS_PAD::poll () {
     return 0;
 }
 
+Ps2AnalogStruct PS_PAD::read_analog () {
+    Ps2AnalogStruct analog = {0, 0, 0, 0};
+
+    if (_connected) {
+        analog.rx = _pad[2] - 0x80;
+        analog.ry = _pad[3] - 0x80;
+        analog.lx = _pad[4] - 0x80;
+        analog.ly = _pad[5] - 0x80;
+    }
+
+    return analog;
+}
+
 int PS_PAD::read_move () {
     int move = 0xF0;
 

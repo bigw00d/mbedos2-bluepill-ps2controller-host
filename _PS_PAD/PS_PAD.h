@@ -5,6 +5,13 @@
 
 #include "mbed.h"
 
+typedef struct Ps2AnalogStruct {
+    uint8_t lx;
+    uint8_t ly;
+    uint8_t rx;
+    uint8_t ry;
+} ps2ana_Type;
+
 class PS_PAD {
 public:
     enum TYPE {
@@ -38,6 +45,7 @@ public:
     int poll ();
     int read (TYPE t);
     int read_move ();
+    Ps2AnalogStruct read_analog ();
     int vibration (int v1, int v2);
 
 private:
