@@ -6,7 +6,7 @@
 #define ENEBLE_VERBOSE 0
 
 #ifdef SPEC_PSFOUR
-#define BUTTON_NUM (12)
+#define BUTTON_NUM (13)
 #else
 #define BUTTON_NUM (8)
 #endif
@@ -114,7 +114,8 @@ uint32_t buttonFilter[BUTTON_NUM] = {
     0x0200,	//	PAD_R2
     0x0100,	//	PAD_L2
     0x0002,	//	PAD_LEFT_STICK
-    0x0004	//	PAD_RIGHT_STICK
+    0x0004,	//	PAD_RIGHT_STICK
+    0x0006	//	PAD_PS(PAD_LEFT_STICK+PAD_RIGHT_STICK)
 };
 
 uint32_t ps2tojoypad(int ps2movebtn);
@@ -402,6 +403,12 @@ uint32_t ps2tojoypad(int ps2movebtn) {
             // PAD_RIGHT_STICK:0x0004
             case 0x0004:
                 joypadbtn |= JOYPAD_BTN12;
+                break;
+            // PAD_PS(PAD_LEFT_STICK+PAD_RIGHT_STICK):0x0006
+            case 0x0006:
+                joypadbtn |= JOYPAD_BTN13;
+                joypadbtn &= ~JOYPAD_BTN12;
+                joypadbtn &= ~JOYPAD_BTN11;
                 break;
             default:
                 ;
