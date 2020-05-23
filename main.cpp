@@ -3,10 +3,10 @@
 #include "USBJoystickMouse.h"
 #include "PS_PAD.h"
 
-#define ENEBLE_VERBOSE 1
+#define ENEBLE_VERBOSE 0
 
 #ifdef SPEC_PSFOUR
-#define BUTTON_NUM (10)
+#define BUTTON_NUM (12)
 #else
 #define BUTTON_NUM (8)
 #endif
@@ -112,7 +112,9 @@ uint32_t buttonFilter[BUTTON_NUM] = {
     0x0400,	//	PAD_R1
     0x0800,	//	PAD_L1
     0x0200,	//	PAD_R2
-    0x0100	//	PAD_L2
+    0x0100,	//	PAD_L2
+    0x0002,	//	PAD_LEFT_STICK
+    0x0004	//	PAD_RIGHT_STICK
 };
 
 uint32_t ps2tojoypad(int ps2movebtn);
@@ -256,81 +258,6 @@ void joypadMode() {
 
     while(1)
     {
-        // test mode
-        // switch (ps2move) {
-        //     case 0:
-        //         joymouse._dirx = 255;
-        //         joymouse._diry = 0;
-        //         joymouse._dirz = 0;
-        //         break;
-        //     case 1:
-        //         joymouse._dirx = 0;
-        //         joymouse._diry = 255;
-        //         joymouse._dirz = 0;
-        //         break;
-        //     case 2:
-        //         joymouse._dirx = 0;
-        //         joymouse._diry = 0;
-        //         joymouse._dirz = 255;
-        //         break;
-        //     case 3:
-        //         joymouse._rotx = 255;
-        //         joymouse._roty = 0;
-        //         joymouse._rotz = 0;
-        //         break;
-        //     case 4:
-        //         joymouse._rotx = 0;
-        //         joymouse._roty = 255;
-        //         joymouse._rotz = 0;
-        //         break;
-        //     case 5:
-        //         joymouse._rotx = 0;
-        //         joymouse._roty = 0;
-        //         joymouse._rotz = 255;
-        //         break;
-        //     case 6:
-        //     case 7:
-        //     case 8:
-        //     case 9:
-        //     case 10:
-        //     case 11:
-        //     case 12:
-        //     case 13:
-        //         joymouse._hat = (ps2move - 6);
-        //         break;
-        //     case 14:
-        //     case 15:
-        //     case 16:
-        //     case 17:
-        //     case 18:
-        //     case 19:
-        //     case 20:
-        //     case 21:
-        //     case 22:
-        //     case 23:
-        //     case 24:
-        //     case 25:
-        //     case 26:
-        //     case 27:
-        //         joymouse._buttons = 0x00000001 << (ps2move - 14);
-        //         break;
-        //     default:
-        //         break;
-        // }
-        // joymouse.sendJoyPadReport();
-        // ps2move++;
-        // if (ps2move >= 27) {
-        //     ps2move = 0;
-        //     joymouse._buttons = 0x00000000;
-        //     joymouse._dirx = 0;
-        //     joymouse._diry = 0;
-        //     joymouse._dirz = 0;
-        //     joymouse._rotx = 0;
-        //     joymouse._roty = 0;
-        //     joymouse._rotz = 0;
-        //     joymouse._hat = 0;
-        // }
-        // wait(1.0);
 
         // check ticks
         if(ticks >= COUNT_3_SEC) { // 3sec
@@ -342,16 +269,13 @@ void joypadMode() {
 
         // check button
         ps2movebtn = ps2.read(PS_PAD :: BUTTONS);
-        // pc.printf("ps2movebtn: %08X\n", ps2movebtn);
-
-        // ps2move = ps2.read(PS_PAD :: ANALOG_RX);
-        // ps2move = ps2.read(PS_PAD :: ANALOG_RY);
-        // ps2move = ps2.read(PS_PAD :: ANALOG_LX);
-        // ps2move = ps2.read(PS_PAD :: ANALOG_LY);
 
         #ifdef  SPEC_PSFOUR
         joypad.buttons = ps2tojoypad(ps2movebtn);
-        // pc.printf("buttons: %08X\n", buttons);
+        #if ENEBLE_VERBOSE
+        pc.printf("ps2movebtn: %08X\n", ps2movebtn);
+        pc.printf("joypad.buttons: %08X\n", joypad.buttons);
+        #endif
 
         if ( buttons & 0x0080 ) { // START
             if ( buttons & 0x0040 ) { // SELECT
@@ -373,7 +297,6 @@ void joypadMode() {
 
         joypad.dirx = analog.lx;
         joypad.diry = analog.ly;
-        // joypad.rotz = (255 - analog.ry);
         joypad.rotz = analog.ry;
         // PAD_R2:0x0200
         if ((ps2movebtn & 0x0200) > 0) {
@@ -390,16 +313,6 @@ void joypadMode() {
             joypad.rotx = 0;
         }
         joypad.dirz = analog.rx;
-        pc.printf("\n");
-        pc.printf("ANALOG_LX: %d\n", analog.lx);
-        pc.printf("ANALOG_LY: %d\n", analog.ly);
-        pc.printf("joypad.dirx: %d\n", joypad.dirx);
-        pc.printf("joypad.diry: %d\n", joypad.diry);
-        pc.printf("\n");
-        pc.printf("ANALOG_RX: %d\n", analog.rx);
-        pc.printf("ANALOG_RY: %d\n", analog.ry);
-        pc.printf("joypad.dirz: %d\n", joypad.dirz);
-        pc.printf("joypad.rotz: %d\n", joypad.rotz);
         joymouse.joypadUpdate(joypad);
         wait(0.05);
 

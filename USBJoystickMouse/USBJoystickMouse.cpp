@@ -141,29 +141,6 @@ void USBJoystickMouse::init() {
 uint8_t * USBJoystickMouse::reportDesc() {    
       static uint8_t reportDescriptor[] = {
       #ifdef SPEC_PSFOUR
-         // USAGE_PAGE(1), 0x01,           // Generic Desktop           
-         // USAGE(1), 0x04,                // Usage (Gamepad)
-         // COLLECTION(1), 0x01,           // Application
-         //    REPORT_ID(1),      REPORT_ID_CUSTOM_JOYSTICK,
-         //    USAGE(1), 0x30,                 // X
-         //    USAGE(1), 0x31,                 // Y
-         //    USAGE(1), 0x32,                 // Z
-         //    USAGE(1), 0x35,                 // Rotate-Z
-         //       0x15, 0x00,                     // logical minimum = 0
-         //       0x26, 0xFF, 0x00,               // logical maximum = 255
-         //       0x75, 0x08,                     // report size = 8 bits
-         //       0x95, 0x04,                     // report count = 4
-         //       INPUT(1), 0x02,                 // Data, Variable, Absolute
-         //    USAGE(1), 0x39,                 // Hat Switch
-         //       0x15, 0x00,                     // logical minimum = 0
-         //       0x25, 0x07,                     // logical maximum = 7
-         //       0x35, 0x00,                     // Physical Minimum (0)
-         //       0x46, 0x3B, 0x01,               // Physical Maximum (315)
-         //       0x65, 0x14,                     // Unit (0x14)
-         //       0x75, 0x04,                     // Report Size (4)
-         //       0x95, 0x01,                     // Report Count (1)
-         //       0x81, 0x42,                     // Input (Var, NullState)
-         //       0x65, 0x00,                     // Unit (0x00)
       0x05,  0x01,  // Usage	Page	(Generic	Desktop	Controls)
       0x09,  0x05,  // Usage	(Gamepad)
       0xA1,  0x01,  // Collection	(Application)
