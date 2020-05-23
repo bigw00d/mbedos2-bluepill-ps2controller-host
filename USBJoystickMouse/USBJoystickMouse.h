@@ -8,6 +8,8 @@
 
 #include "USBHID.h"
 
+#define SPEC_PSFOUR
+
 #define REPORT_ID_CUSTOM_JOYSTICK 1
 #define REPORT_ID_CUSTOM_MOUSE 2
 
@@ -38,8 +40,11 @@ class USBJoystickMouse: public USBHID {
      */
     // 8 buttons, no padding on buttons
     //     USBJoystickMouse(uint16_t vendor_id = 0x1234, uint16_t product_id = 0x0500, uint16_t product_release = 0x0001, int waitForConnect = true):
+    // 8 buttons, no padding on buttons(baffalo)
+    //     USBJoystickMouse(uint16_t vendor_id = 0x0583, uint16_t product_id = 0x2060, uint16_t product_release = 0x0001, int waitForConnect = true):
     // caution: set vendor_id & product_id aas you favorite controller
-    USBJoystickMouse(uint16_t vendor_id = 0x0583, uint16_t product_id = 0x2060, uint16_t product_release = 0x0001, int waitForConnect = true):
+    // 14 buttons, use analog stick, use cross key as hat switch(psfour)
+    USBJoystickMouse(uint16_t vendor_id = 0x054C, uint16_t product_id = 0x05C4, uint16_t product_release = 0x0001, int waitForConnect = true):
       USBHID(0, 0, vendor_id, product_id, product_release, false) {
         init();
         connect(waitForConnect);

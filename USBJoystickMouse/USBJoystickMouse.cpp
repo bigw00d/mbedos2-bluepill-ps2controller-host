@@ -90,6 +90,79 @@ void USBJoystickMouse::init() {
 
 uint8_t * USBJoystickMouse::reportDesc() {    
       static uint8_t reportDescriptor[] = {
+      #ifdef SPEC_PSFOUR
+         // USAGE_PAGE(1), 0x01,           // Generic Desktop           
+         // USAGE(1), 0x04,                // Usage (Gamepad)
+         // COLLECTION(1), 0x01,           // Application
+         //    REPORT_ID(1),      REPORT_ID_CUSTOM_JOYSTICK,
+         //    USAGE(1), 0x30,                 // X
+         //    USAGE(1), 0x31,                 // Y
+         //    USAGE(1), 0x32,                 // Z
+         //    USAGE(1), 0x35,                 // Rotate-Z
+         //       0x15, 0x00,                     // logical minimum = 0
+         //       0x26, 0xFF, 0x00,               // logical maximum = 255
+         //       0x75, 0x08,                     // report size = 8 bits
+         //       0x95, 0x04,                     // report count = 4
+         //       INPUT(1), 0x02,                 // Data, Variable, Absolute
+         //    USAGE(1), 0x39,                 // Hat Switch
+         //       0x15, 0x00,                     // logical minimum = 0
+         //       0x25, 0x07,                     // logical maximum = 7
+         //       0x35, 0x00,                     // Physical Minimum (0)
+         //       0x46, 0x3B, 0x01,               // Physical Maximum (315)
+         //       0x65, 0x14,                     // Unit (0x14)
+         //       0x75, 0x04,                     // Report Size (4)
+         //       0x95, 0x01,                     // Report Count (1)
+         //       0x81, 0x42,                     // Input (Var, NullState)
+         //       0x65, 0x00,                     // Unit (0x00)
+      0x05,  0x01,  // Usage	Page	(Generic	Desktop	Controls)
+      0x09,  0x05,  // Usage	(Gamepad)
+      0xA1,  0x01,  // Collection	(Application)
+         0x85,  0x01,  // Report	ID	(0x01)
+         0x09,  0x30,  // Usage	(Direction-X)
+         0x09,  0x31,  // Usage	(Direction-Y)
+         0x09,  0x32,  // Usage	(Direction-Z)
+         0x09,  0x35,  // Usage	(Rotate-Z)
+            0x15,  0x00,  // Logical	Minimum	(0)
+            0x26,  0xFF,    0x00,  // Logical	Maximum	(255)
+            0x75,  0x08,  // Report	Size	(8)
+            0x95,  0x04,  // Report	Count	(4)
+            0x81,  0x02,  // Input	(Var)
+         0x09,  0x39,  // Usage	(Hat	Switch)
+            0x15,  0x00,  // Logical	Minimum	(0)
+            0x25,  0x07,  // Logical	Maximum	(7)
+            0x35,  0x00,  // Physical	Minimum	(0)
+            0x46,  0x3B,    0x01,  // Physical	Maximum	(315)
+            0x65,  0x14,  // Unit	(0x14)
+            0x75,  0x04,  // Report	Size	(4)
+            0x95,  0x01,  // Report	Count	(1)
+            0x81,  0x42,  // Input	(Var,	NullState)
+            0x65,  0x00,  // Unit	(0x00)
+         0x05,  0x09,  // Usage	Page	(Buttons)
+         0x19,  0x01,  // Usage	Minimum	(1)
+         0x29,  0x0E,  // Usage	Maximum	(14)
+            0x15,  0x00,  // Logical	Minimum	(0)
+            0x25,  0x01,  // Logical	Maximum	(1)
+            0x75,  0x01,  // Report	Size	(1)
+            0x95,  0x0E,  // Report	Count	(14)
+            0x81,  0x02,  // Input	(Var)
+         0x06,  0x00,    0xFF,  // Usage	Page	(unk)
+         0x09,  0x20,  // Usage	(0x20)
+            0x75,  0x06,  // Report	Size	(6)
+            0x95,  0x01,  // Report	Count	(1)
+            0x15,  0x00,  // Logical	Minimum	(0)
+            0x25,  0x7F,  // Logical	Maximum	(127)
+            0x81,  0x02,  // Input	(Var)
+         0x05,  0x01,  // Usage	Page	(Generic	Desktop	Controls)
+            0x09,  0x33,  // Usage	(Rotate-X)
+            0x09,  0x34,  // Usage	(Rotate-Y)
+               0x15,  0x00,  // Logical	Minimum	(0)
+               0x26,  0xFF,    0x00,  // Logical	Maximum	(255)
+               0x75,  0x08,  // Report	Size	(8)
+               0x95,  0x02,  // Report	Count	(2)
+               0x81,  0x02,  // Input	(Var)
+      END_COLLECTION(0),
+
+      #else
          // Joypad
          USAGE_PAGE(1), 0x01,           // Generic Desktop           
          USAGE(1), 0x04,                // Usage (Joystick)
@@ -147,6 +220,7 @@ uint8_t * USBJoystickMouse::reportDesc() {
                INPUT(1),           0x06,
             END_COLLECTION(0),
          END_COLLECTION(0),
+      #endif // SPEC_PSFOUR
 
       };
 
